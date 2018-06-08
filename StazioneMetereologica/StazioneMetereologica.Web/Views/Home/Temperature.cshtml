@@ -1,0 +1,14 @@
+﻿@{
+    ViewData["Title"] = "Temperature";
+    Layout = "_Layout";
+}
+
+<div id="temperatureContainer" style="height: 370px; width:100%;"></div>
+
+@section Scripts
+    {
+    <script src="~/lib/signalr/signalr.js"></script>
+    <script src="~/js/hubs/temperaturehub.js"></script>
+    @*<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.bundle.min.js"></script>*@
+    <script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
+}

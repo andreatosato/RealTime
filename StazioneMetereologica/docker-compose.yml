@@ -1,0 +1,8 @@
+version: '3.4'
+
+services:
+  stazionemetereologica:
+    image: stazionemetereologica
+    build:
+      context: .
+      dockerfile: StazioneMetereologica.Web/Dockerfile
