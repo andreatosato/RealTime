@@ -12,21 +12,8 @@ namespace StazioneMetereologica.Web.Controllers
 {
     public class HomeController : Controller
     {
-        IHubContext<TemperatureHub, ITemperatureHub> _temperatureHub;
-        public HomeController(IHubContext<TemperatureHub, ITemperatureHub> temperatureHub)
-        {
-            _temperatureHub = temperatureHub;
-        }
-
         public IActionResult Index()
         {
-            return View();
-        }
-
-        public IActionResult Temperature()
-        {
-            _temperatureHub.Clients.Groups(GroupsUsers.TemperatureGroups)
-                          .SendAsync("ReceiveTemperature", new ChartDataPoint(DateTime.Now, 20));
             return View();
         }
 

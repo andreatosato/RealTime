@@ -10,7 +10,10 @@
     <PackageReference Include="Microsoft.AspNetCore.App" />
     <PackageReference Include="Microsoft.AspNetCore.SignalR" Version="1.0.0" />
     <PackageReference Include="Microsoft.AspNetCore.SignalR.MsgPack" Version="1.0.0-preview2-final" />
+    <PackageReference Include="Microsoft.Azure.Amqp" Version="2.3.1" />
+    <PackageReference Include="Microsoft.Azure.Devices" Version="1.6.2" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.1.0" />
+    <PackageReference Include="WindowsAzure.ServiceBus" Version="4.1.10" />
   </ItemGroup>
 
 </Project>

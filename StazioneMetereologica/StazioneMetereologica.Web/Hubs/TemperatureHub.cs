@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace StazioneMetereologica.Web.Hubs
 {
-    public class TemperatureHub : Hub<ITemperatureHub>
+    public class TemperatureHub : Hub
     {
         protected TemperatureHub()
         {
@@ -36,13 +36,7 @@ namespace StazioneMetereologica.Web.Hubs
         }
         #endregion
 
-        #region [Temperature]
-        public Task SendTemperatureToGroup(DateTime temperatureData, decimal data)
-        {
-            return Clients.Groups(GroupsUsers.TemperatureGroups)
-                          .SendAsync("ReceiveTemperature", new ChartDataPoint(temperatureData, data));
-        }
-        #endregion
+        
         #region [Umidity]
         #endregion
         #region [Allarms]
