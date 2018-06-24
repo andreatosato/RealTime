@@ -9,7 +9,7 @@ namespace StazioneMetereologica.Web.Hubs
 {
     public class TemperatureHub : Hub
     {
-        protected TemperatureHub()
+        public TemperatureHub()
         {
         }
 

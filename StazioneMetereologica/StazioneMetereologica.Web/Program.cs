@@ -19,6 +19,7 @@ namespace StazioneMetereologica.Web
 
         public static IWebHostBuilder CreateWebHostBuilder(string[] args) =>
             WebHost.CreateDefaultBuilder(args)
+                .UseShutdownTimeout(TimeSpan.FromSeconds(10))
                 .UseStartup<Startup>();
     }
 }

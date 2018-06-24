@@ -1,61 +1,57 @@
-﻿using Microsoft.AspNetCore.SignalR;
+﻿using Microsoft.Azure.EventHubs.Processor;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
-using StazioneMetereologica.Web.Hubs;
+using Microsoft.ServiceBus.Messaging;
 using StazioneMetereologica.Web.HubServices;
 using System;
-using System.Collections.Generic;
-using System.Linq;
+using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using Microsoft.Azure.EventHubs;
+using Microsoft.Azure.EventHubs.Processor;
 
 namespace StazioneMetereologica.Web.HostedServices
 {
-    public class TemperatureHostedService : IHostedService
+    public class TemperatureHostedService : BackgroudServices, IHostedService, IDisposable
     {
         private ILogger<TemperatureHostedService> _logger;
-        private Task _backgroundTask;
-        private CancellationTokenSource _shutdown = new CancellationTokenSource();
         private ITemperatureHubService _temperatureHubService;
+        private readonly string EhConnectionString;
+        private readonly string EhEntityPath = "temperature";
+        private readonly string StorageContainerName = "eventhub";
+        private readonly string StorageConnectionString;
+        private EventProcessorHost eventProcessorHost;
+        private ProcessorsFactory _processorsFactory;
 
-        public TemperatureHostedService(ILogger<TemperatureHostedService> logger, ITemperatureHubService temperatureHubService)
+        public TemperatureHostedService(string connectionString, string storageConnectionString, ILogger<TemperatureHostedService> logger, ITemperatureHubService temperatureHubService)
         {
             _logger = logger ?? throw new ArgumentNullException("Logger ILogger<TemperatureHostedService> is null");
-            _temperatureHubService = temperatureHubService ?? throw new ArgumentNullException("TemperatureHub service is null");             
+            _temperatureHubService = temperatureHubService ?? throw new ArgumentNullException("TemperatureHub service is null");
+            if (string.IsNullOrEmpty(connectionString))
+                throw new ArgumentNullException(nameof(connectionString));
+            EhConnectionString = connectionString;
+            StorageConnectionString = storageConnectionString;
+
+            eventProcessorHost = new EventProcessorHost(
+              EhEntityPath,
+              PartitionReceiver.DefaultConsumerGroupName,
+              EhConnectionString,
+              StorageConnectionString,
+              StorageContainerName);
         }
 
-        public Task StartAsync(CancellationToken cancellationToken)
+        protected override async Task BackgroundProcessing(CancellationToken cancellationToken)
         {
-            _logger.LogInformation($"TemperatureHostedService started {DateTime.UtcNow.ToShortDateString()}");
-
-            _backgroundTask = Task.Run(BackgroundProcessing);
-
-            return Task.CompletedTask;
-        }
-
-        public Task StopAsync(CancellationToken cancellationToken)
-        {
-            _logger.LogInformation($"TemperatureHostedService stopped {DateTime.UtcNow.ToShortDateString()}");
-            _shutdown.Cancel();
-            return Task.WhenAny(_backgroundTask, Task.Delay(Timeout.Infinite, cancellationToken));
-        }
-
-        private async Task BackgroundProcessing()
-        {
-            while (!_shutdown.IsCancellationRequested)
+            while (!cancellationToken.IsCancellationRequested)
             {
-                var cancellationToken = _shutdown.Token;
-                //var workItem = await TaskQueue.DequeueAsync(_shutdown.Token);
-
-                //try
-                //{
-                //    await workItem(_shutdown.Token);
-                //}
-                //catch (Exception ex)
-                //{
-                //    _logger.LogError(ex, $"Error occurred executing {nameof(workItem)}.");
-                //}
+                if(_processorsFactory == null)
+                {
+                    _processorsFactory = new ProcessorsFactory(_temperatureHubService);
+                    await eventProcessorHost.RegisterEventProcessorFactoryAsync(_processorsFactory);
+                }
+                await Task.FromResult<object>(null);
             }
+            await eventProcessorHost.UnregisterEventProcessorAsync();
         }
     }
 }

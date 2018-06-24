@@ -17,6 +17,11 @@ namespace StazioneMetereologica.Web.Controllers
             return View();
         }
 
+        public IActionResult Temperature()
+        {
+            return View();
+        }
+
         public IActionResult Privacy()
         {
             return View();

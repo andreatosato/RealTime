@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using StazioneMetereologica.Web.HostedServices;
 using StazioneMetereologica.Web.Hubs;
 using StazioneMetereologica.Web.HubServices;
@@ -36,11 +37,16 @@ namespace StazioneMetereologica.Web
 
             services.AddSingleton<ITemperatureHubService, TemperatureHubService>();
 
-            services.AddSignalR();
+            services.AddSignalR(t => t.EnableDetailedErrors = true);
             services.AddMvc()
                     .SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
 
-            services.AddHostedService<TemperatureHostedService>();
+            services.AddSingleton<Microsoft.Extensions.Hosting.IHostedService, TemperatureHostedService>(x => 
+                new TemperatureHostedService(Configuration.GetValue<string>("IoTHub"),
+                                             Configuration.GetValue<string>("StorageConnectionString"),
+                                             x.GetRequiredService<ILogger<TemperatureHostedService>>(),
+                                             x.GetRequiredService<ITemperatureHubService>()));
+            //services.AddHostedService<TemperatureHostedService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

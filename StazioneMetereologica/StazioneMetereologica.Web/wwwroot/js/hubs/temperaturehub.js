@@ -3,10 +3,10 @@
  */
 function InitializeRealTime() {
     const connection = new signalR.HubConnectionBuilder()
-        .withUrl("/temperatureHub")
+        .withUrl("/temperaturehub")
         .build();
 
-    connection.on("ReceiveTemperature", (user, temperatureData) => {
+    connection.on("ReceiveTemperature", (temperatureData) => {
         UpdateCharts(temperatureData);
     });
 
@@ -44,8 +44,14 @@ function InitializeCharts() {
  * @param {number} lastPoint
  */
 function UpdateCharts(lastPoint) {
-    temperatureDataPoints.push(lastPoint.value);
+    var data = lastPoint.x;
+    temperatureDataPoints.push(lastPoint.y);
     temperatureDataPoints.shift();
 
     chart.update();
 }
+
+
+// Run
+InitializeRealTime();
+InitializeCharts();
