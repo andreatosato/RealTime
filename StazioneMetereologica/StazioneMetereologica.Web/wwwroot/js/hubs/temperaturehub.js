@@ -32,23 +32,20 @@ function InitializeCharts() {
         zoomEnabled: true,
         axisY: { includeZero: false },
         data: [{
-            type: "area",
+            type: "spline",
             xValueType: "dateTime",
             dataPoints: temperatureDataPoints
         }]
     });
 }
-
 /**
- * Update chart
- * @param {number} lastPoint
+ * Aggiorna il grafico
+ * @param {any} lastPoint
  */
 function UpdateCharts(lastPoint) {
-    var data = lastPoint.x;
-    temperatureDataPoints.push(lastPoint.y);
-    temperatureDataPoints.shift();
-
-    chart.update();
+    temperatureDataPoints.push({ x: lastPoint.x, y: lastPoint.y });
+    //temperatureDataPoints.shift();
+    chart.render();
 }
 
 
