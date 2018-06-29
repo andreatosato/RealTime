@@ -21,33 +21,44 @@ function InitializeRealTime() {
     //});
 }
 
-var temperatureDataPoints = [];
+var heartRateDataPoints = [];
+var heartRateDataPointsTemp = [];
 var chart;
 /**
  * Initialize Chart
  */
 function InitializeCharts() {
-    chart = new CanvasJS.Chart("temperatureContainer", {
-        title: { text: "Temperature Real-Time" },
+    chart = new CanvasJS.Chart("heartRateContainer", {
+        title: { text: "Heart Rate Real-Time" },
+        animationEnabled: true,
+        animationDuration: 500, 
         zoomEnabled: true,
         axisY: { includeZero: false },
         data: [{
             type: "spline",
             xValueType: "dateTime",
-            dataPoints: temperatureDataPoints
+            dataPoints: heartRateDataPoints
         }]
     });
+    chart.render();
+}
+function compareDataPointXAscend(dataPoint1, dataPoint2) {
+    return dataPoint1.x - dataPoint2.x;
 }
 /**
  * Aggiorna il grafico
  * @param {any} lastPoint
  */
 function UpdateCharts(lastPoint) {
-    temperatureDataPoints.push({ x: lastPoint.x, y: lastPoint.y });
-    //temperatureDataPoints.shift();
+    heartRateDataPoints.push({ x: new Date(lastPoint.x), y: lastPoint.y });
+    // Ordinamento temporale
+    chart.options.data[0].dataPoints.sort(compareDataPointXAscend);    
+    // Rimozione punti vecchi
+    if (heartRateDataPoints.length > 50) {
+        heartRateDataPoints.shift();
+    }
     chart.render();
 }
-
 
 // Run
 InitializeRealTime();

@@ -54,11 +54,11 @@ public class ChartDataPoint
 {
     public ChartDataPoint(DateTime currentData, decimal value)
     {
-        X = currentData.Ticks;
+        X = currentData;
         Y = value;
     }
 
     //[JsonProperty("timestamp")]
-    public long X { get; }
+    public DateTime X { get; }
     public decimal Y { get; }
 }

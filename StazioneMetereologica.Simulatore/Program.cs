@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Azure.EventHubs;
@@ -27,26 +28,26 @@ namespace StazioneMetereologica.Simulatore
                 EntityPath = EventHubName
             };
 
-            eventHubClient = EventHubClient.CreateFromConnectionString(connectionStringBuilder.ToString());
+            while (true)
+            {
+                Console.WriteLine("Quanti eventi vuoi generare?");
+                eventHubClient = EventHubClient.CreateFromConnectionString(connectionStringBuilder.ToString());
+                int eventsCount = int.Parse(Console.ReadLine());
 
-            await Task.Delay(TimeSpan.FromSeconds(40));
+                await SendMessagesToEventHub(eventsCount);
 
-            await SendMessagesToEventHub(1000);
-
-            await eventHubClient.CloseAsync();
-
-            Console.WriteLine("Press any key to exit.");
-            Console.ReadLine();
+                await eventHubClient.CloseAsync();                
+            }            
         }
 
         // Creates an Event Hub client and sends 100 messages to the event hub.
         private static async Task SendMessagesToEventHub(int numMessagesToSend)
         {
-            for (var i = 0; i < numMessagesToSend; i++)
+            foreach (int item in HeartrateGenerator.GenerateHeartrate(numMessagesToSend, 0))
             {
                 try
                 {
-                    var message = i.ToString();
+                    var message = item.ToString();
                     Console.WriteLine($"Sending message: {message}");
                     await eventHubClient.SendAsync(new EventData(Encoding.UTF8.GetBytes(message)));
                 }
@@ -55,10 +56,47 @@ namespace StazioneMetereologica.Simulatore
                     Console.WriteLine($"{DateTime.Now} > Exception: {exception.Message}");
                 }
 
-                await Task.Delay(5000);
+                await Task.Delay(200);
+            }
+           
+            Console.WriteLine($"{numMessagesToSend} messages sent.");
+        }
+    }
+
+    public static class HeartrateGenerator
+    {
+        static Random random = new Random();
+
+        public static IEnumerable<int> GenerateHeartrate(
+            int totalSequenceLength,
+            int dropsBelow60After,
+            int bouncesBackAfter = -1)
+        {
+            // NOTE: check input data
+
+            int i = 0;
+
+            // return values > 60
+            while (i < dropsBelow60After)
+            {
+                i++;
+                yield return 60 + random.Next() % 60;
             }
 
-            Console.WriteLine($"{numMessagesToSend} messages sent.");
+            if (bouncesBackAfter > 0)
+                // return values < 60
+                while (i < bouncesBackAfter)
+                {
+                    i++;
+                    yield return random.Next() % 60;
+                }
+
+            // return normal values again
+            while (i < totalSequenceLength)
+            {
+                i++;
+                yield return 60 + random.Next() % 60;
+            }
         }
     }
 }
