@@ -17,7 +17,7 @@ namespace StazioneMetereologica.Web.Controllers
             return View();
         }
 
-        public IActionResult Temperature()
+        public IActionResult HeartRate()
         {
             return View();
         }

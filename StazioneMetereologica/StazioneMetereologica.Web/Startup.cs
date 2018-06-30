@@ -34,19 +34,19 @@ namespace StazioneMetereologica.Web
                 options.CheckConsentNeeded = context => true;
                 options.MinimumSameSitePolicy = SameSiteMode.None;
             });
-
-            services.AddSingleton<ITemperatureHubService, TemperatureHubService>();
+            // Registro SignalR Hub
+            services.AddSingleton<IHeartRateHubServices, HeartRateHubServices>();
 
             services.AddSignalR(t => t.EnableDetailedErrors = true);
             services.AddMvc()
                     .SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
-
-            services.AddSingleton<Microsoft.Extensions.Hosting.IHostedService, TemperatureHostedService>(x => 
-                new TemperatureHostedService(Configuration.GetValue<string>("IoTHub"),
+            // Registro Hosted Service per scodare gli eventi
+            services.AddSingleton<Microsoft.Extensions.Hosting.IHostedService, HeartRateHostedService>(x => 
+                new HeartRateHostedService(Configuration.GetValue<string>("IoTHub"),
                                              Configuration.GetValue<string>("StorageConnectionString"),
-                                             x.GetRequiredService<ILogger<TemperatureHostedService>>(),
-                                             x.GetRequiredService<ITemperatureHubService>()));
-            //services.AddHostedService<TemperatureHostedService>();
+                                             x.GetRequiredService<ILogger<HeartRateHostedService>>(),
+                                             x.GetRequiredService<IHeartRateHubServices>()));
+            
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -68,7 +68,7 @@ namespace StazioneMetereologica.Web
 
             app.UseSignalR(routes =>
             {
-                routes.MapHub<TemperatureHub>("/temperaturehub");
+                routes.MapHub<HeartRateHub>("/heartratehub");
             });
 
             app.UseMvc(routes =>

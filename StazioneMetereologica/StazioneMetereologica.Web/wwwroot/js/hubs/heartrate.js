@@ -3,22 +3,15 @@
  */
 function InitializeRealTime() {
     const connection = new signalR.HubConnectionBuilder()
-        .withUrl("/temperaturehub")
+        .withUrl("/heartratehub")
         .build();
 
-    connection.on("ReceiveTemperature", (temperatureData) => {
-        UpdateCharts(temperatureData);
+    connection.on("ReceiveHeartRate", (heartRateData) => {
+        UpdateCharts(heartRateData);
     });
-
+    
     connection.start()
         .catch(err => console.error(err.toString()));
-
-    //document.getElementById("sendButton").addEventListener("click", event => {
-    //    const user = document.getElementById("userInput").value;
-    //    const message = document.getElementById("messageInput").value;
-    //    connection.invoke("SendMessage", user, message).catch(err => console.error(err.toString()));
-    //    event.preventDefault();
-    //});
 }
 
 var heartRateDataPoints = [];
@@ -57,6 +50,11 @@ function UpdateCharts(lastPoint) {
     if (heartRateDataPoints.length > 50) {
         heartRateDataPoints.shift();
     }
+    chart.render();
+}
+
+function clearGraph() {
+    heartRateDataPoints = [];
     chart.render();
 }
 

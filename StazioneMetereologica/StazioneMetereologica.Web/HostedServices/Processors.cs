@@ -11,22 +11,22 @@ namespace StazioneMetereologica.Web.HostedServices
 {
     public class ProcessorsFactory : IEventProcessorFactory
     {
-        public ITemperatureHubService _temperatureHubService;
-        public ProcessorsFactory(ITemperatureHubService temperatureHubService)
+        public IHeartRateHubServices _temperatureHubService;
+        public ProcessorsFactory(IHeartRateHubServices temperatureHubService)
         {
             _temperatureHubService = temperatureHubService ?? throw new ArgumentNullException("TemperatureHubServices is null");
         }
         public IEventProcessor CreateEventProcessor(PartitionContext context)
         {
-            return new IoTHubProcessor(_temperatureHubService);
+            return new EventHubProcessor(_temperatureHubService);
         }
     }
 
-    public class IoTHubProcessor : IEventProcessor
+    public class EventHubProcessor : IEventProcessor
     {
-        public ITemperatureHubService _temperatureHubService;
+        public IHeartRateHubServices _temperatureHubService;
 
-        public IoTHubProcessor(ITemperatureHubService temperatureHubService)
+        public EventHubProcessor(IHeartRateHubServices temperatureHubService)
         {
             _temperatureHubService = temperatureHubService ?? throw new ArgumentNullException("TemperatureHubServices is null");
         }
@@ -54,9 +54,14 @@ namespace StazioneMetereologica.Web.HostedServices
             foreach (var eventData in messages)
             {
                 var data = Encoding.UTF8.GetString(eventData.Body.Array, eventData.Body.Offset, eventData.Body.Count);
-                decimal temperature = decimal.Parse(data);
-                _temperatureHubService.SendTemperatureToGroup(eventData.SystemProperties.EnqueuedTimeUtc.ToLocalTime(), temperature);
+                decimal value = decimal.Parse(data);
+                _temperatureHubService.SendHeartRateToGroup(eventData.SystemProperties.EnqueuedTimeUtc.ToLocalTime(), value);
                 Console.WriteLine($"Message received. Partition: '{context.PartitionId}', Data: '{data}'");
+
+                if(value < 65 || value > 110)
+                {
+                    _temperatureHubService.SendAlert(eventData.SystemProperties.EnqueuedTimeUtc.ToLocalTime(), value);
+                }
             }
 
             return context.CheckpointAsync();

@@ -7,9 +7,9 @@ using System.Threading.Tasks;
 
 namespace StazioneMetereologica.Web.Hubs
 {
-    public class TemperatureHub : Hub
+    public class HeartRateHub : Hub
     {
-        public TemperatureHub()
+        public HeartRateHub()
         {
         }
 
@@ -21,7 +21,7 @@ namespace StazioneMetereologica.Web.Hubs
         public override async Task OnConnectedAsync()
         {
 
-            await Groups.AddToGroupAsync(Context.ConnectionId, "Temperature");
+            await Groups.AddToGroupAsync(Context.ConnectionId, GroupsUsers.HeartRateGroup);
             await base.OnConnectedAsync();
         }
 
@@ -35,19 +35,12 @@ namespace StazioneMetereologica.Web.Hubs
             await base.OnDisconnectedAsync(exception);
         }
         #endregion
-
-        
-        #region [Umidity]
-        #endregion
-        #region [Allarms]
-        #endregion
     }
 }
 
 public static class GroupsUsers
 {
-    public static IReadOnlyList<string> TemperatureGroups = new[] { "Temperature" };
-    public static IReadOnlyList<string> UmidityGroups = new[] { "Umidity" };
+    public static string HeartRateGroup = "HeartRate";
 }
 
 public class ChartDataPoint
@@ -57,8 +50,7 @@ public class ChartDataPoint
         X = currentData;
         Y = value;
     }
-
-    //[JsonProperty("timestamp")]
+    
     public DateTime X { get; }
     public decimal Y { get; }
 }

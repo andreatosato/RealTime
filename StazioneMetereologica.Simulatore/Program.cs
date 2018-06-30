@@ -20,24 +20,28 @@ namespace StazioneMetereologica.Simulatore
 
         private static async Task MainAsync(string[] args)
         {
-            // Creates an EventHubsConnectionStringBuilder object from a the connection string, and sets the EntityPath.
-            // Typically the connection string should have the Entity Path in it, but for the sake of this simple scenario
-            // we are using the connection string from the namespace.
-            var connectionStringBuilder = new EventHubsConnectionStringBuilder(EventHubConnectionString)
+            try
             {
-                EntityPath = EventHubName
-            };
+                var connectionStringBuilder = new EventHubsConnectionStringBuilder(EventHubConnectionString)
+                {
+                    EntityPath = EventHubName
+                };
 
-            while (true)
+                while (true)
+                {
+                    Console.WriteLine("Quanti eventi vuoi generare?");
+                    eventHubClient = EventHubClient.CreateFromConnectionString(connectionStringBuilder.ToString());
+                    int eventsCount = int.Parse(Console.ReadLine());
+
+                    await SendMessagesToEventHub(eventsCount);
+
+                    await eventHubClient.CloseAsync();
+                }
+            }
+            catch (Exception ex)
             {
-                Console.WriteLine("Quanti eventi vuoi generare?");
-                eventHubClient = EventHubClient.CreateFromConnectionString(connectionStringBuilder.ToString());
-                int eventsCount = int.Parse(Console.ReadLine());
-
-                await SendMessagesToEventHub(eventsCount);
-
-                await eventHubClient.CloseAsync();                
-            }            
+                Console.WriteLine(ex);
+            } 
         }
 
         // Creates an Event Hub client and sends 100 messages to the event hub.
