@@ -2,7 +2,7 @@ version: '3.4'
 
 services:
   stazionemetereologica:
-    image: stazionemetereologica
+    image: heartrate
     build:
       context: .
-      dockerfile: StazioneMetereologica.Web/Dockerfile
+      dockerfile: HeartRate.Web/Dockerfile

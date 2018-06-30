@@ -1,14 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.SignalR;
-using StazioneMetereologica.Web.Hubs;
-using StazioneMetereologica.Web.Models;
+using HeartRate.Web.Models;
 
-namespace StazioneMetereologica.Web.Controllers
+namespace HeartRate.Web.Controllers
 {
     public class HomeController : Controller
     {

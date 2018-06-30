@@ -1,11 +1,8 @@
 ﻿using Microsoft.AspNetCore.SignalR;
-using Newtonsoft.Json;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
-namespace StazioneMetereologica.Web.Hubs
+namespace HeartRate.Web.Hubs
 {
     public class HeartRateHub : Hub
     {

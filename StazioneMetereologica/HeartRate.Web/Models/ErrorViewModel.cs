@@ -1,6 +1,4 @@
-using System;
-
-namespace StazioneMetereologica.Web.Models
+namespace HeartRate.Web.Models
 {
     public class ErrorViewModel
     {

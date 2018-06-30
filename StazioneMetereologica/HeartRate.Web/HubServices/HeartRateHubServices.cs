@@ -1,11 +1,9 @@
 ﻿using Microsoft.AspNetCore.SignalR;
-using StazioneMetereologica.Web.Hubs;
+using HeartRate.Web.Hubs;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
-namespace StazioneMetereologica.Web.HubServices
+namespace HeartRate.Web.HubServices
 {
     public interface IHeartRateHubServices
     {

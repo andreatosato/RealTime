@@ -1,13 +1,12 @@
 ﻿using Microsoft.Azure.EventHubs;
 using Microsoft.Azure.EventHubs.Processor;
-using StazioneMetereologica.Web.HubServices;
+using HeartRate.Web.HubServices;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace StazioneMetereologica.Web.HostedServices
+namespace HeartRate.Web.HostedServices
 {
     public class ProcessorsFactory : IEventProcessorFactory
     {

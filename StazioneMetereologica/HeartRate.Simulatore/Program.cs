@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.Azure.EventHubs;
 
 
-namespace StazioneMetereologica.Simulatore
+namespace HeartRate.Simulatore
 {
     public class Program
     {

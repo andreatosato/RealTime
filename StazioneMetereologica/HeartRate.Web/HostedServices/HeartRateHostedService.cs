@@ -1,15 +1,13 @@
 ﻿using Microsoft.Azure.EventHubs.Processor;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
-using Microsoft.ServiceBus.Messaging;
-using StazioneMetereologica.Web.HubServices;
+using HeartRate.Web.HubServices;
 using System;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Azure.EventHubs;
 
-namespace StazioneMetereologica.Web.HostedServices
+namespace HeartRate.Web.HostedServices
 {
     public class HeartRateHostedService : BackgroudServices, IHostedService, IDisposable
     {

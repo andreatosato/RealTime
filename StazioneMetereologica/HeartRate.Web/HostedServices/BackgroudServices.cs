@@ -1,11 +1,9 @@
 ﻿using Microsoft.Extensions.Hosting;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace StazioneMetereologica.Web.HostedServices
+namespace HeartRate.Web.HostedServices
 {
     public abstract class BackgroudServices : IHostedService, IDisposable
     {

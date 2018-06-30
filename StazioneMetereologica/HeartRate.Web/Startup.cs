@@ -1,20 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Builder;
+﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using StazioneMetereologica.Web.HostedServices;
-using StazioneMetereologica.Web.Hubs;
-using StazioneMetereologica.Web.HubServices;
+using HeartRate.Web.HostedServices;
+using HeartRate.Web.Hubs;
+using HeartRate.Web.HubServices;
 
-namespace StazioneMetereologica.Web
+namespace HeartRate.Web
 {
     public class Startup
     {
