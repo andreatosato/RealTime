@@ -13,7 +13,7 @@ export class ChatService {
 
   connect() {
     this.connection = new HubConnectionBuilder()
-    .withUrl("/chatHub", { accessTokenFactory: () => this.loginService.loginToken })
+    .withUrl("/chatHub", { accessTokenFactory: () => this.loginService.getToken() })
     .withHubProtocol(new MessagePackHubProtocol())
     .build();
   }

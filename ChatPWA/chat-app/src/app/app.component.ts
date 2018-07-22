@@ -7,14 +7,6 @@ import { Component, OnInit } from '@angular/core';
 })
 export class AppComponent implements OnInit {
   ngOnInit(): void {
-    let deferredPrompt;
-    window.addEventListener('beforeinstallprompt', (e) => {
-     alert('beforeinstallprompt event');
-    });
-
-    window.addEventListener('appinstalled', (evt) => {
-      alert('App Installed');
-    });
   }
   title = 'app';
 }

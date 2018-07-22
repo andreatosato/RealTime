@@ -11,10 +11,7 @@ export class ChatRoomComponent implements OnInit {
   constructor() { }
 
   ngOnInit() {
-    this.connection = new HubConnectionBuilder()
-      .withUrl("/chatHub", { accessTokenFactory: () => this.loginToken })
-      .withHubProtocol(new MessagePackHubProtocol())
-      .build();
+    
   }
 
 }
