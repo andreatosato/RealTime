@@ -22,15 +22,15 @@ namespace ChatApp.Backend.Controllers
                 switch (statsRequest.Type)
                 {
                     case StatType.User:
-                        return Ok(new UserStatsResponseModels(ChatStore.UsersOnline.Count));
+                        return Ok(new UserStatsResponseModels(ChatStore.UsersOnline.Count, ChatStore.UsersOnline.Select(x => x.Username)));
                     case StatType.Group:
-                        return Ok(new UserStatsResponseModels(ChatStore.UsersByGroups.Count));
+                        return Ok(new UserStatsResponseModels(ChatStore.UsersByGroups.Count, ChatStore.UsersByGroups.Select(x => x.GroupName)));
                     case StatType.UserInGroup:
                         var group = ChatStore.UsersByGroups.FirstOrDefault(x => x.GroupName == statsRequest.Group);
                         if (group == null)
                             return NotFound();
                         else
-                            return Ok(new UserStatsResponseModels(group.Users.Count));
+                            return Ok(new UserStatsResponseModels(group.Users.Count, new[] { statsRequest.Group }));
                     default:
                         return BadRequest();
                 }

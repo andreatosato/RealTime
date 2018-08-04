@@ -12,11 +12,13 @@ namespace ChatApp.Backend.Models.UserStats
         {
 
         }
-        public UserStatsResponseModels(int count)
+        public UserStatsResponseModels(int count, IEnumerable<string> values)
         {
             Count = count;
+            Values = values;
         }
-        int Count { get; set; }
+        int Count { get; }
+        IEnumerable<string> Values { get; }
     }
 
     public class UserStatsRequestModels

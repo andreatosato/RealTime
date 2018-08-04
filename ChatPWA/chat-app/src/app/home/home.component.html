@@ -1,0 +1,6 @@
+<p *ngIf="this.loginService.getUsername() != undefined; else loggedOut">
+  Benvenuto: {{this.loginService.getUsername()}}
+</p>
+<ng-template #loggedOut>
+    Eseguire login
+</ng-template>

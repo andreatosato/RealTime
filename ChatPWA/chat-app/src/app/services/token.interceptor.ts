@@ -6,7 +6,7 @@ import {
   HttpInterceptor
 } from '@angular/common/http';
 import { LoginService } from './login.service';
-import { Observable } from '../../../node_modules/rxjs';
+import { Observable } from 'rxjs';
 
 
 @Injectable()
@@ -15,7 +15,6 @@ export class TokenInterceptor implements HttpInterceptor {
   constructor(public loginService: LoginService) {}
 
   intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-    
     request = request.clone({
       setHeaders: {
         Authorization: `Bearer ${this.loginService.getToken()}`

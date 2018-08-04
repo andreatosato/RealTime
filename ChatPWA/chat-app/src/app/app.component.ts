@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { LoginService } from './services/login.service';
 
 @Component({
   selector: 'app-root',
@@ -6,7 +7,8 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent implements OnInit {
+  constructor(public loginService: LoginService) {
+  }
   ngOnInit(): void {
   }
-  title = 'app';
 }
