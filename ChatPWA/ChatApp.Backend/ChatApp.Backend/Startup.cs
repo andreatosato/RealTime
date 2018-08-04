@@ -19,10 +19,15 @@ namespace ChatApp.Backend
 
         public IConfiguration Configuration { get; }
 
-        // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddCors();
+            services.AddCors(options => options.AddPolicy("CorsPolicy", builder =>
+            {
+                builder
+                    .AllowAnyMethod()
+                    .AllowAnyHeader()
+                    .WithOrigins("http://localhost:4200");
+            }));
 
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             .AddJwtBearer(options =>
@@ -46,17 +51,22 @@ namespace ChatApp.Backend
                     options.SerializerSettings.ContractResolver = new Newtonsoft.Json.Serialization.DefaultContractResolver();
                 });
 
-            services.AddSignalR()
-                .AddMessagePackProtocol()
+            services.AddSignalR(config => config.EnableDetailedErrors = true)
+                .AddJsonProtocol()
+                //.AddMessagePackProtocol();
                 .AddAzureSignalR();
         }
-
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
+        
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
+            app.UseCors("CorsPolicy");
             if (env.IsDevelopment())
             {
-                app.UseCors(builder => builder.WithOrigins("http://localhost:4200").AllowAnyHeader().AllowAnyOrigin().AllowAnyMethod());
+                
+                //app.UseCors(builder => builder.WithOrigins("http://localhost:4200")
+                //                              .AllowAnyHeader()
+                //                              .AllowAnyOrigin()
+                //                              .AllowAnyMethod());
                 app.UseDeveloperExceptionPage();
             }
             else

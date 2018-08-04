@@ -22,7 +22,8 @@ namespace ChatApp.Backend.Controllers
                 switch (statsRequest.Type)
                 {
                     case StatType.User:
-                        return Ok(new UserStatsResponseModels(ChatStore.UsersOnline.Count, ChatStore.UsersOnline.Select(x => x.Username)));
+                        var result = new UserStatsResponseModels(ChatStore.UsersOnline.Count, ChatStore.UsersOnline.Select(x => x.Username).ToList());
+                        return Ok(result);
                     case StatType.Group:
                         return Ok(new UserStatsResponseModels(ChatStore.UsersByGroups.Count, ChatStore.UsersByGroups.Select(x => x.GroupName)));
                     case StatType.UserInGroup:

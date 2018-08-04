@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ChatApp.Backend.Hubs
 {
-    [Authorize]
+    //[Authorize]
     public class ChatHub : Hub
     {
         public override Task OnConnectedAsync()

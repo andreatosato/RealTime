@@ -17,8 +17,8 @@ namespace ChatApp.Backend.Models.UserStats
             Count = count;
             Values = values;
         }
-        int Count { get; }
-        IEnumerable<string> Values { get; }
+        public int Count { get; set; }
+        public IEnumerable<string> Values { get; set; }
     }
 
     public class UserStatsRequestModels
