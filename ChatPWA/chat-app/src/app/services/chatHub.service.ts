@@ -13,10 +13,11 @@ export class ChatHubService {
   constructor(private loginService: LoginService) { }
 
   connect() {
-    if (this.connection === undefined && this.loginService.getToken() !== undefined) {
+    const token: string = this.loginService.getToken();
+    if (this.connection === undefined && token !== undefined) {
       this.connection = new HubConnectionBuilder()
           .withUrl(environment.baseHubs + '/chat', {
-            accessTokenFactory: () => this.loginService.getToken(),
+            accessTokenFactory: () => token,
             logger: LogLevel.Trace
           })
           .withHubProtocol(new JsonHubProtocol())

@@ -43,6 +43,7 @@ namespace ChatApp.Backend.Controllers
                 claims: claims,
                 expires: DateTime.Now.AddMinutes(30),
                 signingCredentials: creds);
+
             var response = new TokenResponse
             {
                 Token = new JwtSecurityTokenHandler().WriteToken(token)
@@ -50,7 +51,5 @@ namespace ChatApp.Backend.Controllers
 
             return Ok(response);
         }
-
-       
     }
 }

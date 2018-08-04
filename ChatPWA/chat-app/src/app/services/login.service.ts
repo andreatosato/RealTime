@@ -17,8 +17,8 @@ export class LoginService {
     const tokenRequest = new TokenRequest();
     tokenRequest.Username = user;
     return this.http.post(environment.baseUrl + environment.controllers.Auth, tokenRequest)
-    .subscribe((x: string) => {
-      this.loginToken = x;
+    .subscribe((x: any) => {
+      this.loginToken = x.Token;
       this.router.navigateByUrl('home');
     });
   }

@@ -4,11 +4,13 @@ using System.Linq;
 using System.Threading.Tasks;
 using ChatApp.Backend.Models.UserStats;
 using ChatApp.Backend.Stores;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ChatApp.Backend.Controllers
 {
+    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class UserStatsController : ControllerBase

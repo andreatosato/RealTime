@@ -1,3 +1,20 @@
-<p>
-  chat-lists works!
-</p>
+<div class="container">
+  <div class="row">
+    <div class="col-sm">
+      <div class="row">
+        <span>Utenti:</span>{{this.usersConnected}}
+      </div>
+      <div class="row" *ngFor="let user of this.usersConnectedList">
+        <span>{{user}}</span>
+      </div>
+    </div>
+    <div class="col-sm">
+        <div class="row">
+            <span>Gruppi:</span>{{this.groups}}
+          </div>
+          <div class="row" *ngFor="let group of this.groupsList">
+            <span>{{group}}</span>
+          </div>
+    </div>
+  </div>
+</div>
