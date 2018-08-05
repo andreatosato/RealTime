@@ -12,7 +12,7 @@ import { UserSignalR } from '../models/userStats';
 })
 export class PrivateChatComponent implements OnInit {
   public newMessage: Message = new Message();
-  private toUser: UserSignalR;
+  public toUser: UserSignalR;
   constructor(private chatHubService: ChatHubService, public privateChatDataStore: PrivateDataStoreService,
     private activatedRoute: ActivatedRoute) {}
 

@@ -1,6 +1,16 @@
+<div class="row">
+  <div class="col">
+    <span>{{this.toUser.Username}}</span>
+  </div>
+  <div class="col">
+    <span>{{this.privateChatDataStore.currentUser.Username}}</span>
+  </div>
+</div>
+
 <div *ngFor="let message of getMessages()">
     <app-chat-message [message]="message" [currentUser]="this.privateChatDataStore.currentUser"></app-chat-message>
 </div>
+
 <div class="row">
   <form #sendMessage="ngForm" (ngSubmit)="sendMessage.form.valid && addMessage(); sendMessage.reset();">
     <div class="form-group">
