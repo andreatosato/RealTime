@@ -10,6 +10,6 @@ namespace ChatApp.Backend.Models
     {
         public UserSignalR To { get; set; }
         public UserSignalR From { get; set; }
-        public string Message { get; set; }
+        public string TextMessage { get; set; }
     }
 }

@@ -17,7 +17,7 @@ import { AlertsComponent } from './alerts/alerts.component';
 import { ChatMessageComponent } from './chat-message/chat-message.component';
 import { PrivateChatComponent } from './private-chat/private-chat.component';
 import { GroupChatComponent } from './group-chat/group-chat.component';
-import { PrivateChatDataStore } from './models/dataStore';
+import { PrivateDataStoreService } from './services/private-data-store.service';
 
 @NgModule({
   declarations: [
@@ -40,10 +40,12 @@ import { PrivateChatDataStore } from './models/dataStore';
     ServiceWorkerModule.register('/ngsw-worker.js', { enabled: environment.production })
   ],
   providers: [{
-    provide: HTTP_INTERCEPTORS,
-    useClass: TokenInterceptor,
-    multi: true
-  }, PrivateChatDataStore],
+      provide: HTTP_INTERCEPTORS,
+      useClass: TokenInterceptor,
+      multi: true
+    },
+    PrivateDataStoreService
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

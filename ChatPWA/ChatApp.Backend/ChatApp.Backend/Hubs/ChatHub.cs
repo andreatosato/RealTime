@@ -30,9 +30,10 @@ namespace ChatApp.Backend.Hubs
             return new UserSignalR(Context.User.Identity.Name, Context.ConnectionId);
         }
 
-        public void addPrivateMessage(MessageModel message)
+        public void AddPrivateMessage(MessageModel message)
         {
-            Clients.User(message.To.Username).SendAsync("receivePrivateMessage", message);
+            Clients.Client(message.To.ConnectionId).SendAsync("ReceivePrivateMessage", message);
+            //Clients.User(message.To.Username).SendAsync("receivePrivateMessage", message);
         }
     }
 }

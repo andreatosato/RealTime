@@ -4,6 +4,7 @@ import { ChatService } from '../services/chat.service';
 import { ChatHubService } from '../services/chatHub.service';
 import { UserSignalR } from '../models/userStats';
 import { Router } from '@angular/router';
+import { PrivateDataStoreService } from '../services/private-data-store.service';
 
 @Component({
   selector: 'app-chat-lists',
@@ -15,7 +16,8 @@ export class ChatListsComponent implements OnInit {
   public usersConnectedList: UserSignalR[];
   public groups: number;
   public groupsList: string[];
-  constructor(public loginService: LoginService, private chatService: ChatService, private router: Router) { }
+  constructor(public loginService: LoginService, private chatService: ChatService, private router: Router,
+    private privateChatDataStore: PrivateDataStoreService) { }
 
   ngOnInit() {
     this.chatService.getUsersStats().subscribe(x => {

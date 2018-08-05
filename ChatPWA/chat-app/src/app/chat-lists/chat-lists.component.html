@@ -1,30 +1,31 @@
-<div class="container">
-  <div class="row">
-    <div class="col">
-      <div class="row">
-        <div class="col">
-            <span>Utenti:</span>{{this.usersConnected}}
-        </div>
-      </div>
-      <div class="row" *ngFor="let user of this.usersConnectedList">
-        <a href="#" (click)="privateChat(user)">
-          <div class="col">
-              <span>{{user.Username}}</span> - <span><small>{{user.ConnectionId}}</small></span>
-          </div>
-        </a>
+<div class="row">
+  <div class="col">
+    <div class="row">
+      <div class="col">
+          <span>Utenti:</span>{{this.usersConnected}}
       </div>
     </div>
-    <div class="col">
-        <div class="row">
-          <div class="col">
-            <span>Gruppi:</span>{{this.groups}}
-          </div>
-        </div>
-        <div class="row" *ngFor="let group of this.groupsList">
-          <div class="col">
-            <span>{{group}}</span>
-          </div>
-        </div>
+    <div class="row">
+      <div class="col">
+        <ul class="list-group" *ngFor="let user of this.usersConnectedList">
+          <li class="list-group-item list-group-item-action list-group-item-light d-flex justify-content-between align-items-center" (click)="privateChat(user)">
+            <span>{{user.Username}}</span><span class="badge badge-primary badge-pill">{{user.ConnectionId}}</span>
+          </li>
+        </ul>
+      </div> 
     </div>
   </div>
+  <div class="col">
+      <div class="row">
+        <div class="col">
+          <span>Gruppi:</span>{{this.groups}}
+        </div>
+      </div>
+      <div class="row" *ngFor="let group of this.groupsList">
+        <div class="col">
+          <span>{{group}}</span>
+        </div>
+      </div>
+  </div>
 </div>
+

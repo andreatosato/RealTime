@@ -5,7 +5,7 @@ import { LoginService } from './login.service';
 import { environment } from '../../environments/environment.prod';
 import { Message } from '../models/message';
 import { UserSignalR } from '../models/userStats';
-import { PrivateChatDataStore } from '../models/dataStore';
+import { PrivateDataStoreService, PrivateChatData } from './private-data-store.service';
 
 @Injectable({
   providedIn: 'root'
@@ -15,7 +15,7 @@ export class ChatHubService {
   private isConnected: boolean;
   private currentUser: UserSignalR;
 
-  constructor(private loginService: LoginService, private privateChatDataStore: PrivateChatDataStore) { }
+  constructor(private loginService: LoginService, public privateDataStore: PrivateDataStoreService) { }
 
   connect() {
     const token: string = this.loginService.getToken();
@@ -29,11 +29,13 @@ export class ChatHubService {
           // .withHubProtocol(new MessagePackHubProtocol())
           .build();
 
-      this.connection.start().then(x => {
-        this.connection.invoke('GetUserContext', this.getUserContext);
-        // Register Callback
-        this.connection.on('receivePrivateMessage', this.receivePrivateMessage);
-      }).catch(this.errorConnection);
+      this.connection.start()
+                     .catch(this.errorConnection)
+                     .then(x => {
+                        this.connection.invoke('GetUserContext').then(this.getUserContext.bind(this));
+                      });
+      // Register Callback
+      this.connection.on('ReceivePrivateMessage', this.receivePrivateMessage.bind(this));
       this.connection.on('start', this.startConnection);
       this.connection.onclose(this.closeConnection);
     }
@@ -52,15 +54,25 @@ export class ChatHubService {
     console.error(error.toString());
   }
   getUserContext(user: UserSignalR) {
-    this.privateChatDataStore.currentUser = user;
+    this.privateDataStore.currentUser = new UserSignalR(user.Username, user.ConnectionId);
   }
   //#endregion
 
   //#region [PrivateChat]
   addPrivateMessage(message: Message) {
-    this.connection.send('addPrivateMessage', message);
+    this.connection.send('AddPrivateMessage', message);
   }
   receivePrivateMessage(message: Message) {
+    this.privateDataStore.addMessage(message);
+    /*
+    let chatData = this.privateDataStore.chatData.find(x => x.idChat === message.From.ConnectionId);
+    if (chatData === undefined) {
+      chatData = new PrivateChatData();
+      chatData.idChat = message.From.ConnectionId;
+      this.privateDataStore.chatData.push(chatData);
+    }
+    chatData.messages.push(message);
+    */
   }
   //#endregion
 }

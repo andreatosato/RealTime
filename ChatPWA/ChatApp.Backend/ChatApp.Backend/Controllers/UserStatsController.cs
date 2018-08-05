@@ -24,7 +24,9 @@ namespace ChatApp.Backend.Controllers
                 switch (statsRequest.Type)
                 {
                     case StatType.User:
-                        var result = new UserStatsResponseModels<UserSignalR>(ChatStore.UsersOnline.Count, ChatStore.UsersOnline);
+                        var result = new UserStatsResponseModels<UserSignalR>(
+                            ChatStore.UsersOnline.Where(x => x.Username != User.Identity.Name).Count(), 
+                            ChatStore.UsersOnline.Where(x => x.Username != User.Identity.Name));
                         return Ok(result);
                     case StatType.Group:
                         return Ok(new UserStatsResponseModels<string>(ChatStore.UsersByGroups.Count, ChatStore.UsersByGroups.Select(x => x.GroupName)));
@@ -33,7 +35,9 @@ namespace ChatApp.Backend.Controllers
                         if (group == null)
                             return NotFound();
                         else
-                            return Ok(new UserStatsResponseModels<string>(group.Users.Count, new[] { statsRequest.Group }));
+                            return Ok(new UserStatsResponseModels<string>(
+                                group.Users.Where(x => x.Username != User.Identity.Name).Count(),
+                                new[] { statsRequest.Group }));
                     default:
                         return BadRequest();
                 }

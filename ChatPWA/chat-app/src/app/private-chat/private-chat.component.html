@@ -1,14 +1,13 @@
-<div *ngFor="let message of this.privateChatDataStore.messages">
-    <app-chat-message message="message" currentUser="privateChatDataStore.currentUser"></app-chat-message>
+<div *ngFor="let message of getMessages()">
+    <app-chat-message [message]="message" [currentUser]="this.privateChatDataStore.currentUser"></app-chat-message>
 </div>
 <div class="row">
-  <form #sendMessage="ngForm">
+  <form #sendMessage="ngForm" (ngSubmit)="sendMessage.form.valid && addMessage(); sendMessage.reset();">
     <div class="form-group">
       <label for="newMessage">Messaggio</label>
-      <input type="text" class="form-control" id="newMessage" required [(ngModel)]="newMessage.textMessage">
+      <input type="text" class="form-control" required [(ngModel)]="newMessage.TextMessage" name="newMessage">
     </div>
     <button type="submit" class="btn btn-success"
-      (click)="addMessage(); sendMessage.reset();"
       [disabled]="!sendMessage.form.valid">Invia</button>
   </form>
 </div>

@@ -17,6 +17,10 @@ enum StatType {
     UserInGroup
 }
 class UserSignalR {
+    constructor(username: string, connectionId: string) {
+        this.Username = username;
+        this.ConnectionId = connectionId;
+    }
     public Username: string;
     public ConnectionId: string;
 }
