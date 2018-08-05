@@ -63,16 +63,7 @@ export class ChatHubService {
     this.connection.send('AddPrivateMessage', message);
   }
   receivePrivateMessage(message: Message) {
-    this.privateDataStore.addMessage(message);
-    /*
-    let chatData = this.privateDataStore.chatData.find(x => x.idChat === message.From.ConnectionId);
-    if (chatData === undefined) {
-      chatData = new PrivateChatData();
-      chatData.idChat = message.From.ConnectionId;
-      this.privateDataStore.chatData.push(chatData);
-    }
-    chatData.messages.push(message);
-    */
+    this.privateDataStore.addMessage(message, message.From.ConnectionId);
   }
   //#endregion
 }

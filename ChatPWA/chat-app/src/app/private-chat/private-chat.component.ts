@@ -27,15 +27,7 @@ export class PrivateChatComponent implements OnInit {
 
   addMessage() {
     this.chatHubService.addPrivateMessage(this.newMessage);
-    this.privateChatDataStore.addMessage(Object.assign({}, this.newMessage));
-    /*
-    let chatData = this.privateChatDataStore.chatData.find(x => x.idChat === this.newMessage.To.ConnectionId);
-    if (chatData === undefined) {
-      chatData = new PrivateChatData();
-      chatData.idChat = this.newMessage.To.ConnectionId;
-      this.privateChatDataStore.chatData.push(chatData);
-    }
-    chatData.messages.push(Object.assign({}, this.newMessage)); */
+    this.privateChatDataStore.addMessage(Object.assign({}, this.newMessage), this.toUser.ConnectionId);
     this.newMessage.TextMessage = '';
   }
   getMessages(): Message[] {

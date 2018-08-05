@@ -10,11 +10,11 @@ export class PrivateDataStoreService {
   public currentUser: UserSignalR;
   public chatData: PrivateChatData[] = new Array<PrivateChatData>();
   constructor() {}
-  addMessage(message: Message) {
-    let data = this.chatData.find(x => x.idChat === message.From.ConnectionId);
+  addMessage(message: Message, idChat: string) {
+    let data = this.chatData.find(x => x.idChat === idChat);
     if (data === undefined) {
       data = new PrivateChatData();
-      data.idChat = message.From.ConnectionId;
+      data.idChat = idChat;
       this.chatData.push(data);
     }
     data.messages.push(message);
