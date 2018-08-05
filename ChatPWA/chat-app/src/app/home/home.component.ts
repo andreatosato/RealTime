@@ -11,9 +11,10 @@ import { ChatHubService } from '../services/chatHub.service';
 })
 export class HomeComponent implements OnInit {
 
-  constructor(public loginService: LoginService) { }
+  constructor(public loginService: LoginService, private chatHubService: ChatHubService) { }
 
   ngOnInit() {
+    this.chatHubService.connect();
   }
 
 }

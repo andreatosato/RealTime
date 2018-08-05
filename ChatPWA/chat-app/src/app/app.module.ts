@@ -13,6 +13,11 @@ import { LoginComponent } from './login/login.component';
 import { ChatListsComponent } from './chat-lists/chat-lists.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { HomeComponent } from './home/home.component';
+import { AlertsComponent } from './alerts/alerts.component';
+import { ChatMessageComponent } from './chat-message/chat-message.component';
+import { PrivateChatComponent } from './private-chat/private-chat.component';
+import { GroupChatComponent } from './group-chat/group-chat.component';
+import { PrivateChatDataStore } from './models/dataStore';
 
 @NgModule({
   declarations: [
@@ -20,7 +25,11 @@ import { HomeComponent } from './home/home.component';
     ChatRoomComponent,
     ChatListsComponent,
     LoginComponent,
-    HomeComponent
+    HomeComponent,
+    AlertsComponent,
+    ChatMessageComponent,
+    PrivateChatComponent,
+    GroupChatComponent
   ],
   imports: [
     BrowserModule,
@@ -34,7 +43,7 @@ import { HomeComponent } from './home/home.component';
     provide: HTTP_INTERCEPTORS,
     useClass: TokenInterceptor,
     multi: true
-  }],
+  }, PrivateChatDataStore],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

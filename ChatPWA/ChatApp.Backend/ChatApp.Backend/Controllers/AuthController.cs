@@ -3,6 +3,7 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 using ChatApp.Backend.Models.Token;
+using ChatApp.Backend.Stores;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
@@ -29,6 +30,8 @@ namespace ChatApp.Backend.Controllers
             {
                 return BadRequest();
             }
+            if (ChatStore.UsersOnline.Find(x => x.Username == request.Username) != null)
+                return StatusCode((int)System.Net.HttpStatusCode.Conflict);
 
             var claims = new[] {
                 new Claim(ClaimTypes.Name, request.Username)

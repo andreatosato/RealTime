@@ -1,4 +1,5 @@
-﻿using ChatApp.Backend.Stores;
+﻿using ChatApp.Backend.Models;
+using ChatApp.Backend.Stores;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.SignalR;
 using System;
@@ -22,6 +23,16 @@ namespace ChatApp.Backend.Hubs
                 ChatStore.UsersOnline.Remove(currentUser);
 
             return base.OnDisconnectedAsync(exception);
+        }
+
+        public UserSignalR GetUserContext()
+        {
+            return new UserSignalR(Context.User.Identity.Name, Context.ConnectionId);
+        }
+
+        public void addPrivateMessage(MessageModel message)
+        {
+            Clients.User(message.To.Username).SendAsync("receivePrivateMessage", message);
         }
     }
 }

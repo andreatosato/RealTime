@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { environment } from '../../environments/environment';
 import { TokenRequest } from '../models/login';
 import { Router } from '@angular/router';
+import { AlertsService } from './alerts.service';
 
 @Injectable({
   providedIn: 'root'
@@ -10,7 +11,7 @@ import { Router } from '@angular/router';
 export class LoginService {
   private loginToken: string;
   private username: string;
-  constructor(private http: HttpClient, private router: Router) { }
+  constructor(private http: HttpClient, private router: Router, private alertService: AlertsService) { }
 
   login(user: string) {
     this.username = user;
@@ -20,6 +21,8 @@ export class LoginService {
     .subscribe((x: any) => {
       this.loginToken = x.Token;
       this.router.navigateByUrl('home');
+    }, (err: any) => {
+      this.alertService.addError({type: 'danger', message: err.message});
     });
   }
 

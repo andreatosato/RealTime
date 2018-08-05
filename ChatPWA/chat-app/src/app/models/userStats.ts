@@ -6,9 +6,9 @@ class UserStatsRequestModels {
     public Group: string;
 }
 
-class UserStatsResponseModels {
+class UserStatsResponseModels<T> {
     public Count: number;
-    public Values: string[];
+    public Values: T[];
 }
 
 enum StatType {
@@ -16,5 +16,8 @@ enum StatType {
     User,
     UserInGroup
 }
-
-export {UserStatsRequestModels, UserStatsResponseModels, StatType };
+class UserSignalR {
+    public Username: string;
+    public ConnectionId: string;
+}
+export {UserStatsRequestModels, UserStatsResponseModels, StatType, UserSignalR };

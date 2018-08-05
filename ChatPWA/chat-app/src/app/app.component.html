@@ -1,5 +1,8 @@
 <ng-template #loggedIn>
   <li class="nav-item">
+    <a class="nav-link" routerLink="/home" routerLinkActive="active">Home</a>
+  </li>
+  <li class="nav-item">
     <a class="nav-link" routerLink="/chat-list" routerLinkActive="active">Chat</a>
   </li>
 </ng-template>    
@@ -8,12 +11,17 @@
     <a class="nav-link" routerLink="/login" routerLinkActive="active">Login</a>
   </li>
 </ng-template>
-<nav class="navbar navbar-dark bg-primary">
+<nav class="navbar navbar-expand-sm navbar-dark bg-primary">
     <div class="collapse navbar-collapse">
-      <ul class="navbar-nav bd-navbar-nav flex-row">
+      <ul class="navbar-nav mr-auto">
         <ng-container *ngIf="this.loginService.getToken() !== undefined; then loggedIn; else loggedOut">
         </ng-container>        
       </ul>
     </div>
 </nav>
-<router-outlet></router-outlet>
+
+<div class="container">
+    <router-outlet></router-outlet>
+</div>
+
+<app-alerts></app-alerts>

@@ -1,20 +1,30 @@
 <div class="container">
   <div class="row">
-    <div class="col-sm">
+    <div class="col">
       <div class="row">
-        <span>Utenti:</span>{{this.usersConnected}}
+        <div class="col">
+            <span>Utenti:</span>{{this.usersConnected}}
+        </div>
       </div>
       <div class="row" *ngFor="let user of this.usersConnectedList">
-        <span>{{user}}</span>
+        <a href="#" (click)="privateChat(user)">
+          <div class="col">
+              <span>{{user.Username}}</span> - <span><small>{{user.ConnectionId}}</small></span>
+          </div>
+        </a>
       </div>
     </div>
-    <div class="col-sm">
+    <div class="col">
         <div class="row">
+          <div class="col">
             <span>Gruppi:</span>{{this.groups}}
           </div>
-          <div class="row" *ngFor="let group of this.groupsList">
+        </div>
+        <div class="row" *ngFor="let group of this.groupsList">
+          <div class="col">
             <span>{{group}}</span>
           </div>
+        </div>
     </div>
   </div>
 </div>
