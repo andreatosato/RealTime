@@ -1,9 +1,9 @@
 <div class="row">
   <div class="col">
-    <span>{{this.toUser.Username}}</span>
+    <span>{{this.toUser.Username !== undefined ? this.toUser.Username : '' }}</span><i class="fa fa-user-o" aria-hidden="true"></i>
   </div>
   <div class="col">
-    <span>{{this.privateChatDataStore.currentUser.Username}}</span>
+    <span>{{this.privateChatDataStore.currentUser !== undefined ? this.privateChatDataStore.currentUser.Username : ''}}</span>
   </div>
 </div>
 
@@ -11,13 +11,17 @@
     <app-chat-message [message]="message" [currentUser]="this.privateChatDataStore.currentUser"></app-chat-message>
 </div>
 
-<div class="row">
-  <form #sendMessage="ngForm" (ngSubmit)="sendMessage.form.valid && addMessage(); sendMessage.reset();">
-    <div class="form-group">
-      <label for="newMessage">Messaggio</label>
-      <input type="text" class="form-control" required [(ngModel)]="newMessage.TextMessage" name="newMessage">
+<div class="fixed-bottom">
+  <div class="row text-center">
+    <div class="col">
+      <form #sendMessage="ngForm" (ngSubmit)="sendMessage.form.valid && addMessage(); sendMessage.reset();">
+        <div class="form-group">
+          <label for="newMessage">Messaggio</label>
+          <input type="text" class="form-control" required [(ngModel)]="newMessage.TextMessage" name="newMessage">
+        </div>
+        <button type="submit" class="btn btn-success"
+          [disabled]="!sendMessage.form.valid">Invia</button>
+      </form>
     </div>
-    <button type="submit" class="btn btn-success"
-      [disabled]="!sendMessage.form.valid">Invia</button>
-  </form>
+  </div>
 </div>

@@ -24,6 +24,7 @@
               "src/manifest.json"
             ],
             "styles": [
+              "../chat-app/node_modules/font-awesome/css/font-awesome.css",
               "../chat-app/node_modules/bootstrap/dist/css/bootstrap.css",
               "../chat-app/node_modules/bootstrap/dist/css/bootstrap-grid.css",
               "src/styles.css"             
