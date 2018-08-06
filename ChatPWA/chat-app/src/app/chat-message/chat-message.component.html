@@ -1,13 +1,14 @@
 
-<div class="row">
-  <div [className]="{'col-8' : isMyMessage(), 'col-4' : !isMyMessage()}">
-    <div>
-      <div class="d-inline p-2 bg-primary text-white" [hidden]="isMyMessage()">{{this.message.TextMessage}}</div>
-    </div>
-  </div>
-  <div [className]="{'col-4' : isMyMessage(), 'col-8' : !isMyMessage()}">
-    <div>
-      <div class="d-inline p-2 bg-primary text-white" [hidden]="!isMyMessage()">{{this.message.TextMessage}}</div>
-    </div>
+<div [ngClass]="{
+    'd-flex': true,
+    'flex-row-reverse': isMyMessage(), 
+    'flex-row': !isMyMessage()
+  }">
+  <div [ngClass]="{
+    'd-inline p-2 text-white': true,
+    'bg-primary': isMyMessage(),     
+    'bg-secondary': !isMyMessage()
+  }"> 
+    <span>{{this.message.TextMessage}}</span>
   </div>
 </div>
