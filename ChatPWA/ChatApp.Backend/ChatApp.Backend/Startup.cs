@@ -45,10 +45,10 @@ namespace ChatApp.Backend
                 });
 
             services.AddSignalR(config => config.EnableDetailedErrors = true)
-                .AddJsonProtocol(config => config.PayloadSerializerSettings.ContractResolver = new Newtonsoft.Json.Serialization.DefaultContractResolver())
-                //.AddMessagePackProtocol()
+                ///.AddJsonProtocol(config => config.PayloadSerializerSettings.ContractResolver = new Newtonsoft.Json.Serialization.DefaultContractResolver())
+                .AddMessagePackProtocol()
                 .AddAzureSignalR();
-        }
+        } 
         
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
