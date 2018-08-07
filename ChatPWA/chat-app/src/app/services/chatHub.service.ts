@@ -25,8 +25,8 @@ export class ChatHubService {
             accessTokenFactory: () => token,
             logger: LogLevel.Trace
           })
-          // .withHubProtocol(new JsonHubProtocol())
-          .withHubProtocol(new MessagePackHubProtocol())
+          .withHubProtocol(new JsonHubProtocol())
+          // .withHubProtocol(new MessagePackHubProtocol())
           .build();
 
       this.connection.start()
