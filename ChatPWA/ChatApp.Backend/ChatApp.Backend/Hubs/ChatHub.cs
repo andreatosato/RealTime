@@ -3,6 +3,7 @@ using ChatApp.Backend.Stores;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.SignalR;
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace ChatApp.Backend.Hubs
@@ -32,8 +33,12 @@ namespace ChatApp.Backend.Hubs
 
         public void AddPrivateMessage(MessageModel message)
         {
-            Clients.Client(message.To.ConnectionId).SendAsync("ReceivePrivateMessage", message);
-            //Clients.User(message.To.Username).SendAsync("receivePrivateMessage", message);
+            Clients.Client(GetConnectionId(message.To.Username)).SendAsync("ReceivePrivateMessage", message);
+        }
+
+        private string GetConnectionId(string username)
+        {
+            return ChatStore.UsersOnline.FirstOrDefault(x => x.Username == username).ConnectionId;
         }
     }
 }

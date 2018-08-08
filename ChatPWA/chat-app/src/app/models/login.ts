@@ -1,4 +1,3 @@
-export class TokenRequest
-{
+export class TokenRequest {
     public Username: string;
 }

@@ -22,7 +22,7 @@ export class LoginService {
       this.loginToken = x.Token;
       this.router.navigateByUrl('home');
     }, (err: any) => {
-      this.alertService.addError({type: 'danger', message: err.message});
+       this.alertService.addError({type: 'danger', message: err.message});
     });
   }
 
