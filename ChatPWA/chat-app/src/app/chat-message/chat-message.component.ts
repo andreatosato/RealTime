@@ -5,7 +5,7 @@ import { UserSignalR } from '../models/userStats';
 @Component({
   selector: 'app-chat-message',
   templateUrl: './chat-message.component.html',
-  styles: []
+  styleUrls: ['./chat-message.component.css']
 })
 export class ChatMessageComponent implements OnInit {
   @Input() message: Message;

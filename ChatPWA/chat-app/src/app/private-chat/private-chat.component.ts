@@ -8,7 +8,7 @@ import { UserSignalR } from '../models/userStats';
 @Component({
   selector: 'app-private-chat',
   templateUrl: './private-chat.component.html',
-  styles: []
+  styleUrls: ['./private-chat.component.css']
 })
 export class PrivateChatComponent implements OnInit {
   public newMessage: Message = new Message();

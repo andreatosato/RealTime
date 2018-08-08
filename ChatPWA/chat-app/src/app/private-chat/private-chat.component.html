@@ -1,29 +1,27 @@
-<div class="row">
-  <div class="col">
-    <i class="fa fa-user" aria-hidden="true"></i>
-    <span>{{this.toUser.Username !== undefined ? this.toUser.Username : '' }}</span>
+<div class="container">
+  <div class="row">
+    <div class="col chat-title">
+      <i class="fa fa-comments"></i> Chatting with:
+      <span>{{this.toUser.Username !== undefined ? this.toUser.Username : '' }}</span>
+    </div>
   </div>
-  <div class="col text-right">    
-    <span>{{this.privateChatDataStore.currentUser !== undefined ? this.privateChatDataStore.currentUser.Username : ''}}</span>
-    <i class="fa fa-user" aria-hidden="true"></i>    
-  </div>
-</div>
 
-<div *ngFor="let message of getMessages()">
+  <div *ngFor="let message of getMessages()">
     <app-chat-message [message]="message" [currentUser]="this.privateChatDataStore.currentUser"></app-chat-message>
-</div>
+  </div>
 
-<div class="fixed-bottom">
-  <div class="row text-center">
-    <div class="col">
-      <form #sendMessage="ngForm" (ngSubmit)="sendMessage.form.valid && addMessage(); sendMessage.reset();">
-        <div class="form-group">
-          <label for="newMessage">Messaggio</label>
-          <input type="text" class="form-control" required [(ngModel)]="newMessage.TextMessage" name="newMessage">
-        </div>
-        <button type="submit" class="btn btn-success"
-          [disabled]="!sendMessage.form.valid">Invia</button>
-      </form>
+  <div class="fixed-bottom">
+    <div class="row text-center">
+      <div class="col">
+        <form #sendMessage="ngForm" (ngSubmit)="sendMessage.form.valid && addMessage(); sendMessage.reset();">
+          <div class="form-group">
+            <input type="text" class="form-control" required [(ngModel)]="newMessage.TextMessage" name="newMessage" placeholder="Type your message here...">
+            <button type="submit" class="btn btn-success" [disabled]="!sendMessage.form.valid">
+              <i class="fa fa-play"></i>
+            </button>
+          </div>
+        </form>
+      </div>
     </div>
   </div>
 </div>

@@ -1,0 +1,20 @@
+.std-message-back-secondary {
+  background-color: rgb(126, 126, 126);
+  color: white;
+  padding: 12px !important;
+  padding-left: 30px !important;
+  border-radius: 20px 20px 20px 3px !important;
+}
+
+.std-message-back-primary {
+  background-color: #007BFF;
+  color: white;
+  padding: 12px !important;
+  padding-right: 30px !important;
+  border-radius: 20px 20px 3px 20px !important;
+}
+
+.std-message {
+  margin: 15px !important;
+  box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.2), 0 2px 8px 0 rgba(0, 0, 0, 0.19);
+}

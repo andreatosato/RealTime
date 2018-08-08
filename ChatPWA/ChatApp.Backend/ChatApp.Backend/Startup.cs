@@ -48,7 +48,7 @@ namespace ChatApp.Backend
                 .AddJsonProtocol(config => config.PayloadSerializerSettings.ContractResolver = new Newtonsoft.Json.Serialization.DefaultContractResolver())
                 //.AddMessagePackProtocol()
                 .AddAzureSignalR();
-        } 
+        }
         
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
