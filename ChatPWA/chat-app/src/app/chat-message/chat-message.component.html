@@ -1,14 +1,14 @@
-
 <div [ngClass]="{
     'd-flex': true,
-    'flex-row-reverse': isMyMessage(), 
+    'flex-row-reverse': isMyMessage(),
     'flex-row': !isMyMessage()
   }">
   <div [ngClass]="{
     'd-inline p-2 text-white': true,
-    'bg-primary': isMyMessage(),     
-    'bg-secondary': !isMyMessage()
-  }"> 
+    'std-message': true,
+    'std-message-back-secondary': !isMyMessage(),
+    'std-message-back-primary': isMyMessage()
+  }">
     <span>{{this.message.TextMessage}}</span>
   </div>
 </div>

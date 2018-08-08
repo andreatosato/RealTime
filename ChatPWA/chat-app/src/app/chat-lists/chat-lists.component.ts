@@ -9,7 +9,7 @@ import { PrivateDataStoreService } from '../services/private-data-store.service'
 @Component({
   selector: 'app-chat-lists',
   templateUrl: './chat-lists.component.html',
-  styles: [],
+  styleUrls: ['./chat-lists.component.css'],
 })
 export class ChatListsComponent implements OnInit {
   public usersConnected: number;

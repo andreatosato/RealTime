@@ -29,7 +29,7 @@ import { PrivateDataStoreService } from './services/private-data-store.service';
     AlertsComponent,
     ChatMessageComponent,
     PrivateChatComponent,
-    GroupChatComponent
+    GroupChatComponent,
   ],
   imports: [
     BrowserModule,

@@ -4,7 +4,7 @@ import { AlertsService, IAlert } from '../services/alerts.service';
 @Component({
   selector: 'app-alerts',
   templateUrl: './alerts.component.html',
-  styles: []
+  styleUrls: ['./alerts.component.css']
 })
 export class AlertsComponent implements OnInit {
   @Input() public errors: Array<IAlert> = this.alertService.getErrors();
