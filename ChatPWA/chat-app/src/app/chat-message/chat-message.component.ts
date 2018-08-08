@@ -10,7 +10,10 @@ import { UserSignalR } from '../models/userStats';
 export class ChatMessageComponent implements OnInit {
   @Input() message: Message;
   @Input() currentUser: UserSignalR;
-  constructor() { }
+  @Input() IsGroup: boolean;
+  constructor() {
+    this.IsGroup = true;
+  }
 
   ngOnInit() {
   }

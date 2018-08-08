@@ -9,6 +9,20 @@
     'std-message-back-secondary': !isMyMessage(),
     'std-message-back-primary': isMyMessage()
   }">
-    <span>{{this.message.TextMessage}}</span>
+    <div class="row">
+      <div class="col">
+        <span *ngIf="this.IsGroup">
+          <small [ngClass]="{
+            'text-left': !isMyMessage(),
+            'text-right': isMyMessage()
+          }">{{this.message.From.Username}}</small>
+        </span>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col">
+        <span>{{this.message.TextMessage}}</span>
+      </div>
+    </div>
   </div>
 </div>
