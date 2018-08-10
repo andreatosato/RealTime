@@ -18,3 +18,16 @@
   margin: 15px !important;
   box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.2), 0 2px 8px 0 rgba(0, 0, 0, 0.19);
 }
+
+.message-sender-right {
+  font-weight: 300;
+  font-size: .8em;
+  margin-top: -11px;
+  margin-right: 15px;
+}
+.message-sender-left {
+  font-weight: 300;
+  font-size: .8em;
+  margin-top: -11px;
+  margin-left: 15px;
+}
