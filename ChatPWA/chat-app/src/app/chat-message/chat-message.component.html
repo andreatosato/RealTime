@@ -11,18 +11,14 @@
   }">
     <div class="row">
       <div class="col">
-        <span *ngIf="this.IsGroup">
-          <small [ngClass]="{
-            'text-left': !isMyMessage(),
-            'text-right': isMyMessage()
-          }">{{this.message.From.Username}}</small>
-        </span>
-      </div>
-    </div>
-    <div class="row">
-      <div class="col">
         <span>{{this.message.TextMessage}}</span>
       </div>
     </div>
   </div>
 </div>
+<div *ngIf="this.IsGroup" [ngClass]="{
+    'message-sender-left': !isMyMessage(),
+    'message-sender-right': isMyMessage(),
+    'text-left': !isMyMessage(),
+    'text-right': isMyMessage()
+  }">{{isMyMessage() ? "You" : this.message.From.Username}}</div>

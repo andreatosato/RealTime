@@ -4,8 +4,8 @@
 
 export const environment = {
   production: false,
-  baseUrl: 'https://localhost:44341/api/',
-  baseHubs: 'https://localhost:44341',
+  baseUrl: 'http://localhost:49224/api/',
+  baseHubs: 'http://localhost:49224/',
   controllers: {
     Auth : 'Auth',
     Groups: 'Groups',
