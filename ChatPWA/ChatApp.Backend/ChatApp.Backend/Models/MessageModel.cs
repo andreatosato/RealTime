@@ -6,10 +6,18 @@ using System.Threading.Tasks;
 
 namespace ChatApp.Backend.Models
 {
-    public class MessageModel
+    public abstract class Message
     {
-        public UserSignalR To { get; set; }
         public UserSignalR From { get; set; }
         public string TextMessage { get; set; }
+    }
+    public class PrivateMessageModel : Message
+    {
+        public UserSignalR To { get; set; }
+    }
+
+    public class GroupMessageModel : Message
+    {
+        public string Group { get; set; }
     }
 }

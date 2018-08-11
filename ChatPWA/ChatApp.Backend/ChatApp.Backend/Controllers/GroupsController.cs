@@ -1,6 +1,8 @@
-﻿using ChatApp.Backend.Models.Groups;
+﻿using ChatApp.Backend.Hubs;
+using ChatApp.Backend.Models.Groups;
 using ChatApp.Backend.Stores;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.SignalR;
 
 namespace ChatApp.Backend.Controllers
 {
@@ -8,16 +10,30 @@ namespace ChatApp.Backend.Controllers
     [ApiController]
     public class GroupsController : ControllerBase
     {
+        private IHubContext<ChatHub> _chatHubContext;
+        public GroupsController(IHubContext<ChatHub> chatHubContext)
+        {
+            _chatHubContext = chatHubContext;
+        }
         [HttpPost]
         public IActionResult AddGroup(GroupModel group)
         {
             if (!ModelState.IsValid)
                 return BadRequest();
-
-            ChatStore.UsersByGroups.Add(new UserInGroup()
+            if(ChatStore.UsersByGroups.Find(x => x.GroupName == group.Group) == null)
             {
-                GroupName = group.Group
-            });
+                var newGroup = new UserInGroup()
+                {
+                    GroupName = group.Group
+                };
+                ChatStore.UsersByGroups.Add(newGroup);
+                var currentUser = ChatStore.UsersOnline.Find(x => x.Username == User.Identity.Name);
+                if (currentUser != null)
+                {
+                    _chatHubContext.Clients.AllExcept(currentUser.ConnectionId).SendAsync("NewGroup", newGroup);
+                }
+                
+            }
             return Ok();
         }
 
@@ -31,19 +47,30 @@ namespace ChatApp.Backend.Controllers
             if (oldGroup == null)
                 return NotFound();
             else
+            {
                 oldGroup.GroupName = group.Group;
+                var currentUser = ChatStore.UsersOnline.Find(x => x.Username == User.Identity.Name);
+                if (currentUser != null)
+                {
+                    _chatHubContext.Clients.AllExcept(currentUser.ConnectionId).SendAsync("UpdateGroup", oldGroup);
+                }
+            }
             return Ok();
         }
 
-
-        [HttpDelete]
-        public IActionResult DeleteGroup(GroupModel group)
+        [HttpDelete("{group}")]
+        public IActionResult DeleteGroup(string group)
         {
             if (!ModelState.IsValid)
                 return BadRequest();
 
-            var groupToDelete = ChatStore.UsersByGroups.Find(x => x.GroupName == group.Group);
+            var groupToDelete = ChatStore.UsersByGroups.Find(x => x.GroupName == group);
             ChatStore.UsersByGroups.Remove(groupToDelete);
+            var currentUser = ChatStore.UsersOnline.Find(x => x.Username == User.Identity.Name);
+            if (currentUser != null)
+            {
+                _chatHubContext.Clients.AllExcept(currentUser.ConnectionId).SendAsync("DeleteGroup", groupToDelete);
+            }
             return Ok();
         }
     }

@@ -1,10 +1,11 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using ChatApp.Backend.Models.Groups;
+using System.ComponentModel.DataAnnotations;
 
 namespace ChatApp.Backend.Models.JoinGroups
 {
-    public class JoinGroupModels
+    public class JoinGroupModels : GroupModel
     {
         [Required]
-        public string Group { get; set; }
+        public string Username { get; set; }
     }
 }

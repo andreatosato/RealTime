@@ -1,9 +1,5 @@
 <div class="alerts">
-    <p *ngFor="let error of errors">
-        <ngb-alert [type]="error.type" (close)="closeError(error)">{{ error.message }}</ngb-alert>
-    </p>
-
-    <p *ngFor="let conn of connections">
-        <ngb-alert [type]="conn.type" (close)="closeConnections(conn)">{{ conn.message }}</ngb-alert>
+    <p *ngFor="let alert of alerts">
+        <ngb-alert [type]="alert.getType()" (close)="closeError(alert)">{{ alert.message }}</ngb-alert>
     </p>
 </div>

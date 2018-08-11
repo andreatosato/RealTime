@@ -1,8 +1,15 @@
 import { UserSignalR } from './userStats';
 
 export class Message {
-    To: UserSignalR;
     From: UserSignalR;
     TextMessage: string;
     IdChat: string;
+}
+
+export class PrivateMessage extends Message {
+    To: UserSignalR;
+}
+
+export class GroupMessage extends Message {
+    Group: string;
 }

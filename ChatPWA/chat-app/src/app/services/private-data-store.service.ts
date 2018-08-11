@@ -1,5 +1,6 @@
+import { PrivateChatData } from '../models/ChatData';
 import { Injectable } from '@angular/core';
-import { Message } from '../models/message';
+import { PrivateMessage } from '../models/message';
 import { UserSignalR } from '../models/userStats';
 
 
@@ -10,7 +11,7 @@ export class PrivateDataStoreService {
   public currentUser: UserSignalR;
   public chatData: PrivateChatData[] = new Array<PrivateChatData>();
   constructor() {}
-  addMessage(message: Message, idChat: string) {
+  addMessage(message: PrivateMessage, idChat: string) {
     let data = this.chatData.find(x => x.idChat === idChat);
     if (data === undefined) {
       data = new PrivateChatData();
@@ -19,9 +20,4 @@ export class PrivateDataStoreService {
     }
     data.messages.push(message);
   }
-}
-
-export class PrivateChatData {
-  public idChat: string;
-  public messages: Message[] = new Array<Message>();
 }

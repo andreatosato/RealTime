@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ChatHubService } from '../services/chatHub.service';
-import { Message } from '../models/message';
-import { PrivateDataStoreService, PrivateChatData } from '../services/private-data-store.service';
+import { PrivateMessage } from '../models/message';
+import { PrivateDataStoreService } from '../services/private-data-store.service';
 import { ActivatedRoute } from '@angular/router';
 import { UserSignalR } from '../models/userStats';
 
@@ -11,7 +11,7 @@ import { UserSignalR } from '../models/userStats';
   styleUrls: ['./private-chat.component.css']
 })
 export class PrivateChatComponent implements OnInit {
-  public newMessage: Message = new Message();
+  public newMessage: PrivateMessage = new PrivateMessage();
   public toUser: UserSignalR;
   constructor(private chatHubService: ChatHubService, public privateChatDataStore: PrivateDataStoreService,
     private activatedRoute: ActivatedRoute) {}
@@ -30,10 +30,10 @@ export class PrivateChatComponent implements OnInit {
     this.privateChatDataStore.addMessage(Object.assign({}, this.newMessage), this.toUser.ConnectionId);
     this.newMessage.TextMessage = '';
   }
-  getMessages(): Message[] {
+  getMessages(): PrivateMessage[] {
     const chatData = this.privateChatDataStore.chatData.find(x => x.idChat === this.toUser.ConnectionId);
     if (chatData === undefined) {
-      return new Array<Message>();
+      return new Array<PrivateMessage>();
     }
     return chatData.messages;
   }

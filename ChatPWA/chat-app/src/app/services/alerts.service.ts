@@ -4,33 +4,45 @@ import { Injectable } from '@angular/core';
   providedIn: 'root'
 })
 export class AlertsService {
-  private errors: Array<IAlert> = [];
-  private connections: Array<IAlert> = [];
+  private alertData: Array<Alert> = [];
 
   constructor() { }
-  addError(error: IAlert) {
-    this.errors.push(error);
+  add(message: IAlert) {
+    const alertMessage = new Alert();
+    alertMessage.message = message.message;
+    alertMessage.type = message.type;
+    this.alertData.push(alertMessage);
   }
-  addConnections(conn: IAlert) {
-    this.connections.push(conn);
+  getAlert(): Array<Alert> {
+    return this.alertData;
   }
-  getErrors(): Array<IAlert> {
-    return this.errors;
+  close(message: IAlert) {
+    const alertMessage = new Alert();
+    alertMessage.message = message.message;
+    alertMessage.type = message.type;
+    const index: number = this.alertData.indexOf(alertMessage);
+    this.alertData.splice(index, 1);
   }
-  getConnections(): Array<IAlert> {
-    return this.connections;
-  }
-  closeError(error: IAlert) {
-    const index: number = this.errors.indexOf(error);
-    this.errors.splice(index, 1);
-  }
-  closeConnections(conn: IAlert) {
-    const index: number = this.connections.indexOf(conn);
-    this.connections.splice(index, 1);
+}
+export interface IAlert {
+  type: AlertType;
+  message: string;
+}
+export class Alert implements IAlert {
+  type: AlertType;
+  message: string;
+  getType(): string {
+    return AlertType[this.type];
   }
 }
 
-export interface IAlert {
-  type: string;
-  message: string;
+export enum AlertType {
+  success,
+  info,
+  warning,
+  danger,
+  primary,
+  secondary,
+  light,
+  dark
 }

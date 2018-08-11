@@ -27,18 +27,32 @@ namespace ChatApp.Backend.Hubs
                 ChatStore.UsersOnline.Remove(currentUser);
                 RemoveFromGroup();
             }
+            NewDisconnectedUser(currentUser);
             return base.OnDisconnectedAsync(exception);
         }
 
         #region SignalR
-        public void AddPrivateMessage(MessageModel message)
+        public void AddPrivateMessage(PrivateMessageModel message)
         {
             Clients.Client(GetConnectionId(message.To.Username)).SendAsync("ReceivePrivateMessage", message);
         }
-
+        private void AddGroupMessage(GroupMessageModel message)
+        {
+            var groupExist = ChatStore.UsersByGroups.FirstOrDefault(x => x.GroupName == message.Group);
+            if(groupExist != null)
+            {
+                Clients.Clients(groupExist.Users.Select(x => x.ConnectionId).ToList())
+                       .SendAsync("ReceiveGroupMessage", message);
+            }
+        }
         private void NewConnectedUser(UserSignalR currentUser)
         {
             Clients.Others.SendAsync("NewConnectedUser", currentUser);
+        }
+
+        private void NewDisconnectedUser(UserSignalR currentUser)
+        {
+            Clients.Others.SendAsync("NewDisconnectedUser", currentUser);
         }
         #endregion
 

@@ -29,7 +29,7 @@ namespace ChatApp.Backend.Controllers
                 return NotFound("Group not exists");
             else
             {
-                var currentUser = ChatStore.UsersOnline.Find(x => x.Username == User.Identity.Name);
+                var currentUser = ChatStore.UsersOnline.Find(x => x.Username == join.Username);
                 if (currentUser == null)
                     return NotFound("User Not Connected");
 
@@ -54,7 +54,7 @@ namespace ChatApp.Backend.Controllers
                 return NotFound();
             else
             {
-                var currentUser = ChatStore.UsersOnline.Find(x => x.Username == User.Identity.Name);
+                var currentUser = ChatStore.UsersOnline.Find(x => x.Username == join.Username);
                 if (currentUser == null)
                     return NotFound("User Not Connected");
 

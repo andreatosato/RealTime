@@ -3,7 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { environment } from '../../environments/environment';
 import { TokenRequest } from '../models/login';
 import { Router } from '@angular/router';
-import { AlertsService } from './alerts.service';
+import { AlertsService, Alert, AlertType } from './alerts.service';
 
 @Injectable({
   providedIn: 'root'
@@ -22,7 +22,7 @@ export class LoginService {
       this.loginToken = x.Token;
       this.router.navigateByUrl('home');
     }, (err: any) => {
-       this.alertService.addError({type: 'danger', message: err.message});
+       this.alertService.add({type: AlertType.danger, message: err.message});
     });
   }
 

@@ -1,5 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { AlertsService, IAlert } from '../services/alerts.service';
+import { AlertsService, IAlert, Alert } from '../services/alerts.service';
 
 @Component({
   selector: 'app-alerts',
@@ -7,20 +7,14 @@ import { AlertsService, IAlert } from '../services/alerts.service';
   styleUrls: ['./alerts.component.css']
 })
 export class AlertsComponent implements OnInit {
-  @Input() public errors: Array<IAlert> = this.alertService.getErrors();
-  @Input() public connections: Array<IAlert> = this.alertService.getConnections();
+  @Input() public alerts: Array<Alert> = this.alertService.getAlert();
 
   constructor(private alertService: AlertsService) { }
 
   ngOnInit() {
   }
 
-  closeError(error: IAlert) {
-    this.alertService.closeError(error);
+  closeError(message: IAlert) {
+    this.alertService.close(message);
   }
-
-  closeConnections(conn: IAlert) {
-    this.alertService.closeConnections(conn);
-  }
-
 }

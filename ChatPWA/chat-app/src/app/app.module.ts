@@ -8,7 +8,6 @@ import { AppComponent } from './app.component';
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { environment } from '../environments/environment';
 import { routing } from './app.routes';
-import { ChatRoomComponent } from './chat-room/chat-room.component';
 import { LoginComponent } from './login/login.component';
 import { ChatListsComponent } from './chat-lists/chat-lists.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
@@ -22,7 +21,6 @@ import { PrivateDataStoreService } from './services/private-data-store.service';
 @NgModule({
   declarations: [
     AppComponent,
-    ChatRoomComponent,
     ChatListsComponent,
     LoginComponent,
     HomeComponent,
