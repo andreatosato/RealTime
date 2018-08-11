@@ -4,7 +4,9 @@ import { GroupDataStoreService } from '../services/group-data-store.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Message, GroupMessage } from '../models/message';
 import { ChatService } from '../services/chat.service';
-import { JoinGroupModel } from '../models/groupData';
+import { JoinGroupModel, JoinGroupNotifyModel } from '../models/groupData';
+import {NgbModal, ModalDismissReasons} from '@ng-bootstrap/ng-bootstrap';
+import { GroupChatData } from '../models/ChatData';
 
 @Component({
   selector: 'app-group-chat',
@@ -15,23 +17,35 @@ export class GroupChatComponent implements OnInit, OnDestroy {
   public newMessage: GroupMessage = new GroupMessage();
   public groupName: string;
   constructor(private chatHubService: ChatHubService, public groupChatDataStore: GroupDataStoreService,
-    private chatService: ChatService, private activatedRoute: ActivatedRoute, private router: Router) { }
+    private chatService: ChatService, private activatedRoute: ActivatedRoute, private router: Router,
+    private modalService: NgbModal) { }
   ngOnInit() {
     this.activatedRoute.queryParams.subscribe(params => {
       this.groupName = params['groupName'];
       this.newMessage.Group = this.groupName;
-      const joinModel = new JoinGroupModel();
+      const joinModel = new JoinGroupNotifyModel();
       joinModel.Group = this.groupName;
-      joinModel.Username = this.groupChatDataStore.currentUser.Username;
+      joinModel.User = this.groupChatDataStore.currentUser;
       this.chatService.addUserToGroup(joinModel);
+
+      // Clear or Set data
+      let currentChat = this.groupChatDataStore.chatData.find(x => x.idChat === this.groupName);
+      if (currentChat !== undefined) {
+        currentChat.messages = new Array<Message>();
+      } else {
+        currentChat = new GroupChatData();
+        currentChat.idChat = this.groupName;
+        currentChat.users.push(this.groupChatDataStore.currentUser);
+        this.groupChatDataStore.chatData.push(currentChat);
+      }
     });
     this.newMessage.From = this.groupChatDataStore.currentUser;
     this.newMessage.TextMessage = '';
   }
   ngOnDestroy(): void {
-    const joinModel = new JoinGroupModel();
+    const joinModel = new JoinGroupNotifyModel();
     joinModel.Group = this.groupName;
-    joinModel.Username = this.groupChatDataStore.currentUser.Username;
+    joinModel.User = this.groupChatDataStore.currentUser;
     this.chatService.removeUserFromGroup(joinModel);
   }
 
@@ -49,5 +63,15 @@ export class GroupChatComponent implements OnInit, OnDestroy {
   }
   leaveGroup() {
     this.router.navigate(['/chat-list']);
+  }
+  getCurrentChat(): GroupChatData {
+    let currentChat = this.groupChatDataStore.chatData.find(x => x.idChat === this.groupName);
+    if (currentChat === undefined) {
+      currentChat = new GroupChatData();
+    }
+    return currentChat;
+  }
+  showUsersConnected(content) {
+    this.modalService.open(content, { centered: true, size: 'lg' });
   }
 }

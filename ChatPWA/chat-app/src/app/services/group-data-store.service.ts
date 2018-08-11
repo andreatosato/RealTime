@@ -19,4 +19,22 @@ export class GroupDataStoreService {
     }
     data.messages.push(message);
   }
+  addUser(user: UserSignalR, idChat: string) {
+    const data = this.chatData.find(x => x.idChat === idChat);
+    if (data !== undefined) {
+      const userExist = data.users.find(x => x.Username === user.Username);
+      if (userExist === undefined) {
+        data.users.push(user);
+      }
+    }
+  }
+  removeUser(user: UserSignalR, idChat: string) {
+    const data = this.chatData.find(x => x.idChat === idChat);
+    if (data !== undefined) {
+      const index = data.users.findIndex(x => x.Username === user.Username);
+      if (index >= 0) {
+        data.users.slice(index, 1);
+      }
+    }
+  }
 }

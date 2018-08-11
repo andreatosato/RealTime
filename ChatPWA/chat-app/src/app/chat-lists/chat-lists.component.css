@@ -16,3 +16,7 @@
 .container {
   padding: 40px;
 }
+
+.row-compressed {
+  padding: 0px !important;
+}

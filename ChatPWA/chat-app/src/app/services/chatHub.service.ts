@@ -7,7 +7,7 @@ import { Message, PrivateMessage, GroupMessage } from '../models/message';
 import { UserSignalR } from '../models/userStats';
 import { PrivateDataStoreService } from './private-data-store.service';
 import { OnlineDataStoreService } from './online-data-store.service';
-import { GroupModel } from '../models/groupData';
+import { GroupModel, JoinGroupNotifyModel } from '../models/groupData';
 import { GroupDataStoreService } from './group-data-store.service';
 
 @Injectable({
@@ -43,7 +43,9 @@ export class ChatHubService {
       this.connection.on('ReceivePrivateMessage', this.receivePrivateMessage.bind(this));
       this.connection.on('ReceiveGroupMessage', this.receiveGroupMessage.bind(this));
       this.connection.on('NewConnectedUser', this.newConnectedUser.bind(this));
-      this.connection.on('NewDisconnectedUser', this.newConnectedUser.bind(this));
+      this.connection.on('NewDisconnectedUser', this.newDisconnectedUser.bind(this));
+      this.connection.on('NewUserInGroup', this.newUserInGroup.bind(this));
+      this.connection.on('NewUserLeaveGroup', this.newUserLeaveGroup.bind(this));
       this.connection.on('NewGroup', this.newGroup.bind(this));
       this.connection.on('UpdateGroup', this.updateGroup.bind(this));
       this.connection.on('DeleteGroup', this.deleteGroup.bind(this));
@@ -104,6 +106,12 @@ export class ChatHubService {
       const index = this.onlineDataStore.usersConnectedList.indexOf(userExist);
       this.onlineDataStore.usersConnectedList.splice(index, 1);
     }
+  }
+  newUserInGroup(user: JoinGroupNotifyModel) {
+    this.groupDataStore.addUser(user.User, user.Group);
+  }
+  newUserLeaveGroup(user: JoinGroupNotifyModel) {
+    this.groupDataStore.removeUser(user.User, user.Group);
   }
   newGroup(group: GroupModel) {
     const groupExist = this.onlineDataStore.groupsList.find(x => x === group.Group);

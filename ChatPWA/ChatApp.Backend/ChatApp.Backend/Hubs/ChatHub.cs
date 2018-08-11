@@ -1,4 +1,5 @@
 ﻿using ChatApp.Backend.Models;
+using ChatApp.Backend.Models.JoinGroups;
 using ChatApp.Backend.Stores;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.SignalR;
@@ -49,6 +50,7 @@ namespace ChatApp.Backend.Hubs
                        .SendAsync("ReceiveGroupMessage", message);
             }
         }
+
         private void NewConnectedUser(UserSignalR currentUser)
         {
             Clients.Others.SendAsync("NewConnectedUser", currentUser);

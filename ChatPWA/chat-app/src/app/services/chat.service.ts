@@ -4,9 +4,10 @@ import { environment } from '../../environments/environment';
 import { Observable } from 'rxjs';
 import { UserStatsResponseModels, UserStatsRequestModels, StatType, UserSignalR } from '../models/userStats';
 import { OnlineDataStoreService } from './online-data-store.service';
-import { GroupModel, UpdateGroupModel, JoinGroupModel } from '../models/groupData';
+import { GroupModel, UpdateGroupModel, JoinGroupModel, JoinGroupNotifyModel } from '../models/groupData';
 import { AlertsService, AlertType } from './alerts.service';
 import { GroupDataStoreService } from './group-data-store.service';
+import { GroupChatData } from '../models/ChatData';
 
 @Injectable({
   providedIn: 'root'
@@ -30,13 +31,27 @@ export class ChatService {
     .subscribe(x => {
       this.onlineDataStore.groups = x.Count;
       this.onlineDataStore.groupsList = x.Values;
+      this.onlineDataStore.groupsList.forEach(t => {
+        this.getUserInGroupStats(t);
+      });
     });
   }
 
-  getUserInGroupStats(groupName: string): Observable<UserStatsResponseModels<string>> {
+  getUserInGroupStats(groupName: string) {
     const userInGroupRequest = new UserStatsRequestModels(StatType.UserInGroup);
     userInGroupRequest.Group = groupName;
-    return this.http.post<UserStatsResponseModels<string>>(environment.baseUrl + environment.controllers.UserStats, userInGroupRequest);
+    this.http.post<UserStatsResponseModels<UserSignalR>>(environment.baseUrl + environment.controllers.UserStats, userInGroupRequest)
+    .subscribe(x => {
+      let currentGroup = this.groupDataStore.chatData.find(t => t.idChat === groupName);
+      if (currentGroup !== undefined) {
+        currentGroup.users = currentGroup.users;
+      } else {
+        currentGroup = new GroupChatData();
+        currentGroup.idChat = groupName;
+        currentGroup.users = currentGroup.users;
+        this.groupDataStore.chatData.push(currentGroup);
+      }
+    });
   }
 
   addGroup(group: GroupModel) {
@@ -50,9 +65,10 @@ export class ChatService {
   updateGroup(group: UpdateGroupModel) {
     return this.http.put(environment.baseUrl + environment.controllers.Groups, group)
     .subscribe(() => {
-      let oldGroup = this.onlineDataStore.groupsList.find(x => x === group.OldGroup);
-      if (oldGroup !== undefined) {
-        oldGroup = group.Group;
+      const oldGroupIndex = this.onlineDataStore.groupsList.findIndex(x => x === group.OldGroup);
+      if (oldGroupIndex >= 0) {
+        this.onlineDataStore.groupsList.splice(oldGroupIndex, 1);
+        this.onlineDataStore.groupsList.push(group.Group);
       }
     },
     (err) => this.alertService.add({message: err, type: AlertType.danger}));
@@ -64,18 +80,25 @@ export class ChatService {
       if (oldGroup !== undefined) {
         const index = this.onlineDataStore.groupsList.indexOf(oldGroup);
         this.onlineDataStore.groupsList.splice(index, 1);
+        this.onlineDataStore.groups--;
       }
     },
     (err) => this.alertService.add({message: err, type: AlertType.danger}));
   }
-  addUserToGroup(group: JoinGroupModel) {
-    return this.http.post(environment.baseUrl + environment.controllers.JoinGroups + '/AddUserToGroup', group)
-    .subscribe(() => { },
+  addUserToGroup(group: JoinGroupNotifyModel) {
+    const request = new JoinGroupModel();
+    request.Group = group.Group;
+    request.Username = group.User.Username;
+    return this.http.post(environment.baseUrl + environment.controllers.JoinGroups + '/AddUserToGroup', request)
+    .subscribe(() => { this.groupDataStore.addUser(group.User, group.Group); },
     (err) => this.alertService.add({message: err, type: AlertType.danger}));
   }
-  removeUserFromGroup(group: JoinGroupModel) {
-    return this.http.post(environment.baseUrl + environment.controllers.JoinGroups + '/RemoveUserFromGroup', group)
-    .subscribe(() => { },
+  removeUserFromGroup(group: JoinGroupNotifyModel) {
+    const request = new JoinGroupModel();
+    request.Group = group.Group;
+    request.Username = group.User.Username;
+    return this.http.post(environment.baseUrl + environment.controllers.JoinGroups + '/RemoveUserFromGroup', request)
+    .subscribe(() => { this.groupDataStore.removeUser(group.User, group.Group);  },
     (err) => this.alertService.add({message: err, type: AlertType.danger}));
   }
 }

@@ -21,7 +21,7 @@ form {
     border-radius: 5px;
     padding: 8px;
     padding-left: 20px;
-    z-index: 9999999;
+    z-index: 10;
   }
   .chat-title span {
     font-size: 1.2em;

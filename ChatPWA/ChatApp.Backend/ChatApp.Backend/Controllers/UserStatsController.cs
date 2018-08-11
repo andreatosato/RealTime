@@ -29,15 +29,21 @@ namespace ChatApp.Backend.Controllers
                             ChatStore.UsersOnline.Where(x => x.Username != User.Identity.Name));
                         return Ok(result);
                     case StatType.Group:
-                        return Ok(new UserStatsResponseModels<string>(ChatStore.UsersByGroups.Count, ChatStore.UsersByGroups.Select(x => x.GroupName)));
+                        return Ok(new UserStatsResponseModels<string>(
+                            ChatStore.UsersByGroups.Count, 
+                            ChatStore.UsersByGroups.Select(x => x.GroupName)));
                     case StatType.UserInGroup:
                         var group = ChatStore.UsersByGroups.FirstOrDefault(x => x.GroupName == statsRequest.Group);
                         if (group == null)
                             return NotFound();
                         else
-                            return Ok(new UserStatsResponseModels<string>(
-                                group.Users.Where(x => x.Username != User.Identity.Name).Count(),
-                                new[] { statsRequest.Group }));
+                        {
+                            var users = group.Users.Where(x => x.Username != User.Identity.Name);
+                            return Ok(new UserStatsResponseModels<UserSignalR>(
+                               users.Count(),
+                               users.ToList()));
+                        }
+                           
                     default:
                         return BadRequest();
                 }

@@ -6,6 +6,7 @@ using ChatApp.Backend.Stores;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SignalR;
+using System.Linq;
 
 namespace ChatApp.Backend.Controllers
 {
@@ -41,6 +42,15 @@ namespace ChatApp.Backend.Controllers
                 {
                     group.Users.Add(currentUser);
                     await _chatHubContext.Groups.AddToGroupAsync(currentUser.ConnectionId, group.GroupName);
+                    //await _chatHubContext.Clients.Group(group.GroupName).SendAsync("NewUserInGroup", currentUser);
+
+                    await _chatHubContext.Clients
+                                        .Clients(group.Users.Select(x => x.ConnectionId).ToList())
+                                        .SendAsync("NewUserInGroup", new JoinGroupNotifyModel
+                                        {
+                                            User = currentUser,
+                                            Group = group.GroupName
+                                        });
                 }
             }
             return Ok();
@@ -67,6 +77,15 @@ namespace ChatApp.Backend.Controllers
                 {
                     group.Users.Remove(userAlreadyJoin);
                     await _chatHubContext.Groups.RemoveFromGroupAsync(currentUser.ConnectionId, group.GroupName);
+                    //await _chatHubContext.Clients.Group(group.GroupName).SendAsync("NewUserLeaveGroup", currentUser);
+                
+                    await _chatHubContext.Clients
+                                         .Clients(group.Users.Select(x => x.ConnectionId).ToList())
+                                         .SendAsync("NewUserLeaveGroup", new JoinGroupNotifyModel
+                                         {
+                                             User = currentUser,
+                                             Group = group.GroupName
+                                         });
                 }
             }
             return Ok();
