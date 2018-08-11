@@ -69,9 +69,13 @@ export class ChatService {
     (err) => this.alertService.add({message: err, type: AlertType.danger}));
   }
   addUserToGroup(group: JoinGroupModel) {
-
+    return this.http.post(environment.baseUrl + environment.controllers.JoinGroups + '/AddUserToGroup', group)
+    .subscribe(() => { },
+    (err) => this.alertService.add({message: err, type: AlertType.danger}));
   }
   removeUserFromGroup(group: JoinGroupModel) {
-
+    return this.http.post(environment.baseUrl + environment.controllers.JoinGroups + '/RemoveUserFromGroup', group)
+    .subscribe(() => { },
+    (err) => this.alertService.add({message: err, type: AlertType.danger}));
   }
 }

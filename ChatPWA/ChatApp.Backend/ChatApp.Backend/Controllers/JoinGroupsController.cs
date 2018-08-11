@@ -3,13 +3,15 @@ using System.Threading.Tasks;
 using ChatApp.Backend.Hubs;
 using ChatApp.Backend.Models.JoinGroups;
 using ChatApp.Backend.Stores;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SignalR;
 
 namespace ChatApp.Backend.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/[controller]/[action]")]
     [ApiController]
+    [AllowAnonymous]
     public class JoinGroupsController : ControllerBase
     {
         private IHubContext<ChatHub> _chatHubContext;
@@ -19,6 +21,7 @@ namespace ChatApp.Backend.Controllers
         }
 
         [HttpPost]
+        [ActionName("AddUserToGroup")]
         public async Task<IActionResult> AddUserToGroupAsync(JoinGroupModels join)
         {
             if (!ModelState.IsValid)
@@ -44,7 +47,8 @@ namespace ChatApp.Backend.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> RemoveUserFromGroup(JoinGroupModels join)
+        [ActionName("RemoveUserFromGroup")]
+        public async Task<IActionResult> RemoveUserFromGroupAsync(JoinGroupModels join)
         {
             if (!ModelState.IsValid)
                 return BadRequest();

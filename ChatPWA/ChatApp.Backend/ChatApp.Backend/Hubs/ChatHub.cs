@@ -36,12 +36,16 @@ namespace ChatApp.Backend.Hubs
         {
             Clients.Client(GetConnectionId(message.To.Username)).SendAsync("ReceivePrivateMessage", message);
         }
-        private void AddGroupMessage(GroupMessageModel message)
+
+        public void AddGroupMessage(GroupMessageModel message)
         {
             var groupExist = ChatStore.UsersByGroups.FirstOrDefault(x => x.GroupName == message.Group);
             if(groupExist != null)
             {
-                Clients.Clients(groupExist.Users.Select(x => x.ConnectionId).ToList())
+                Clients.Clients(groupExist.Users
+                                          .Where(x => x.ConnectionId != Context.ConnectionId)
+                                          .Select(x => x.ConnectionId)
+                                          .ToList())
                        .SendAsync("ReceiveGroupMessage", message);
             }
         }
