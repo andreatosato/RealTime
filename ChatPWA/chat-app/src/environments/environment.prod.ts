@@ -1,7 +1,7 @@
 export const environment = {
   production: true,
-  baseUrl: 'https://localhost:44341/api/',
-  baseHubs: 'https://localhost:44341',
+  baseUrl: 'https://codegensignalr.azurewebsites.net/api/',
+  baseHubs: 'https://codegensignalr.azurewebsites.net:44341',
   controllers: {
     Auth : 'Auth',
     Groups: 'Groups',

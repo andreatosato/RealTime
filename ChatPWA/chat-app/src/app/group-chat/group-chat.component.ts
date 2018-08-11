@@ -11,7 +11,7 @@ import { GroupChatData } from '../models/ChatData';
 @Component({
   selector: 'app-group-chat',
   templateUrl: './group-chat.component.html',
-  styleUrls: ['/group-chat.component.css']
+  styleUrls: ['./group-chat.component.css']
 })
 export class GroupChatComponent implements OnInit, OnDestroy {
   public newMessage: GroupMessage = new GroupMessage();

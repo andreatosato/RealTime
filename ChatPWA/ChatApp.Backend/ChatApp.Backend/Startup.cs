@@ -65,6 +65,8 @@ namespace ChatApp.Backend
                 app.UseHsts();
             }
 
+            app.UseDefaultFiles();
+            app.UseStaticFiles();
             app.UseAuthentication();
             app.UseHttpsRedirection();
             app.UseMvc();
