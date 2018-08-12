@@ -27,7 +27,7 @@ export class GroupChatComponent implements OnInit, OnDestroy {
       joinModel.Group = this.groupName;
       joinModel.User = this.groupChatDataStore.currentUser;
       this.chatService.addUserToGroup(joinModel);
-
+      this.chatService.getUserInGroupStats(this.groupName);
       // Clear or Set data
       let currentChat = this.groupChatDataStore.chatData.find(x => x.idChat === this.groupName);
       if (currentChat !== undefined) {

@@ -22,7 +22,8 @@ export class ChatService {
       .subscribe(x => {
         this.onlineDataStore.usersConnected = x.Count;
         this.onlineDataStore.usersConnectedList = x.Values;
-      });
+      },
+      (err) => this.alertService.add({message: JSON.stringify(err), type: AlertType.danger}));
   }
 
   getGroupsStats() {
@@ -34,7 +35,8 @@ export class ChatService {
       this.onlineDataStore.groupsList.forEach(t => {
         this.getUserInGroupStats(t);
       });
-    });
+    },
+    (err) => this.alertService.add({message: JSON.stringify(err), type: AlertType.danger}));
   }
 
   getUserInGroupStats(groupName: string) {
@@ -51,7 +53,8 @@ export class ChatService {
         currentGroup.users = currentGroup.users;
         this.groupDataStore.chatData.push(currentGroup);
       }
-    });
+    },
+    (err) => this.alertService.add({message: JSON.stringify(err), type: AlertType.danger}));
   }
 
   addGroup(group: GroupModel) {
@@ -60,7 +63,7 @@ export class ChatService {
       this.onlineDataStore.groups++;
       this.onlineDataStore.groupsList.push(group.Group);
     },
-    (err) => this.alertService.add({message: err, type: AlertType.danger}));
+    (err) => this.alertService.add({message: JSON.stringify(err), type: AlertType.danger}));
   }
   updateGroup(group: UpdateGroupModel) {
     return this.http.put(environment.baseUrl + environment.controllers.Groups, group)
@@ -71,7 +74,7 @@ export class ChatService {
         this.onlineDataStore.groupsList.push(group.Group);
       }
     },
-    (err) => this.alertService.add({message: err, type: AlertType.danger}));
+    (err) => this.alertService.add({message: JSON.stringify(err), type: AlertType.danger}));
   }
   deleteGroup(group: string) {
     return this.http.delete(environment.baseUrl + environment.controllers.Groups + '/' + group)
@@ -83,7 +86,7 @@ export class ChatService {
         this.onlineDataStore.groups--;
       }
     },
-    (err) => this.alertService.add({message: err, type: AlertType.danger}));
+    (err) => this.alertService.add({message: JSON.stringify(err), type: AlertType.danger}));
   }
   addUserToGroup(group: JoinGroupNotifyModel) {
     const request = new JoinGroupModel();
@@ -91,7 +94,7 @@ export class ChatService {
     request.Username = group.User.Username;
     return this.http.post(environment.baseUrl + environment.controllers.JoinGroups + '/AddUserToGroup', request)
     .subscribe(() => { this.groupDataStore.addUser(group.User, group.Group); },
-    (err) => this.alertService.add({message: err, type: AlertType.danger}));
+    (err) => this.alertService.add({message: JSON.stringify(err), type: AlertType.danger}));
   }
   removeUserFromGroup(group: JoinGroupNotifyModel) {
     const request = new JoinGroupModel();
@@ -99,6 +102,6 @@ export class ChatService {
     request.Username = group.User.Username;
     return this.http.post(environment.baseUrl + environment.controllers.JoinGroups + '/RemoveUserFromGroup', request)
     .subscribe(() => { this.groupDataStore.removeUser(group.User, group.Group);  },
-    (err) => this.alertService.add({message: err, type: AlertType.danger}));
+    (err) => this.alertService.add({message: JSON.stringify(err), type: AlertType.danger}));
   }
 }

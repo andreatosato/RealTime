@@ -6,7 +6,7 @@ import { UserSignalR } from '../models/userStats';
 })
 export class OnlineDataStoreService {
   public usersConnected: number;
-  public usersConnectedList: UserSignalR[];
+  public usersConnectedList: UserSignalR[] = new Array<UserSignalR>();
   public groups = 0;
   public groupsList: string[] = new Array<string>();
   constructor() { }

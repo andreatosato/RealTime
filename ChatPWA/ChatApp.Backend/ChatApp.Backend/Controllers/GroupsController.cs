@@ -3,6 +3,7 @@ using ChatApp.Backend.Models.Groups;
 using ChatApp.Backend.Stores;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SignalR;
+using System.Linq;
 
 namespace ChatApp.Backend.Controllers
 {
@@ -65,13 +66,17 @@ namespace ChatApp.Backend.Controllers
                 return BadRequest();
 
             var groupToDelete = ChatStore.UsersByGroups.Find(x => x.GroupName == group);
-            ChatStore.UsersByGroups.Remove(groupToDelete);
-            var currentUser = ChatStore.UsersOnline.Find(x => x.Username == User.Identity.Name);
-            if (currentUser != null)
+            if (!groupToDelete.Users.Any())
             {
-                _chatHubContext.Clients.AllExcept(currentUser.ConnectionId).SendAsync("DeleteGroup", groupToDelete);
+                ChatStore.UsersByGroups.Remove(groupToDelete);
+                var currentUser = ChatStore.UsersOnline.Find(x => x.Username == User.Identity.Name);
+                if (currentUser != null)
+                {
+                    _chatHubContext.Clients.AllExcept(currentUser.ConnectionId).SendAsync("DeleteGroup", groupToDelete);
+                }
+                return Ok();
             }
-            return Ok();
+            return Conflict();
         }
     }
 }

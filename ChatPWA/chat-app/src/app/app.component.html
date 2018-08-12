@@ -14,7 +14,7 @@
       <i class="fa fa-sign-in"></i> &nbsp; Login</a>
   </li>
 </ng-template>
-<nav class="navbar navbar-expand-sm navbar-dark bg-primary">
+<nav class="navbar navbar-expand navbar-dark bg-primary" role="navigation">
   <div class="collapse navbar-collapse">
     <ul class="navbar-nav mr-auto">
       <ng-container *ngIf="this.loginService.getToken() !== undefined; then loggedIn; else loggedOut">

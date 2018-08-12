@@ -9,6 +9,7 @@ import { PrivateDataStoreService } from './private-data-store.service';
 import { OnlineDataStoreService } from './online-data-store.service';
 import { GroupModel, JoinGroupNotifyModel } from '../models/groupData';
 import { GroupDataStoreService } from './group-data-store.service';
+import { AlertsService, AlertType } from './alerts.service';
 
 @Injectable({
   providedIn: 'root'
@@ -20,7 +21,7 @@ export class ChatHubService {
 
   constructor(private loginService: LoginService,
     public privateDataStore: PrivateDataStoreService, public groupDataStore: GroupDataStoreService,
-    private onlineDataStore: OnlineDataStoreService) { }
+    private onlineDataStore: OnlineDataStoreService, private alertsService: AlertsService) { }
 
   connect() {
     const token: string = this.loginService.getToken();
@@ -35,7 +36,7 @@ export class ChatHubService {
           .build();
 
       this.connection.start()
-                     .catch(this.errorConnection)
+                     .catch(this.errorConnection.bind(this))
                      .then(x => {
                         this.connection.invoke('GetUserContext').then(this.getUserContext.bind(this));
                       });
@@ -49,21 +50,17 @@ export class ChatHubService {
       this.connection.on('NewGroup', this.newGroup.bind(this));
       this.connection.on('UpdateGroup', this.updateGroup.bind(this));
       this.connection.on('DeleteGroup', this.deleteGroup.bind(this));
-      this.connection.on('start', this.startConnection);
       this.connection.onclose(this.closeConnection);
     }
   }
   //#region [Connection]
-  startConnection() {
-    this.isConnected = true;
-    console.log('startConnection');
-  }
   closeConnection(error: Error) {
     this.isConnected = false;
     console.error(error.toString());
   }
   errorConnection(error: Error) {
     this.isConnected = false;
+    this.alertsService.add({type: AlertType.danger, message: JSON.stringify(error)});
     console.error(error.toString());
   }
   getUserContext(user: UserSignalR) {
@@ -98,6 +95,7 @@ export class ChatHubService {
     } else {
       this.onlineDataStore.usersConnected++;
       this.onlineDataStore.usersConnectedList.push(user);
+      this.alertsService.add({type: AlertType.info, message: 'user connected: ' + user.Username});
     }
   }
   newDisconnectedUser(user: UserSignalR) {
@@ -108,9 +106,11 @@ export class ChatHubService {
     }
   }
   newUserInGroup(user: JoinGroupNotifyModel) {
+    this.alertsService.add({type: AlertType.info, message: user.User.Username + ' join to ' + user.Group});
     this.groupDataStore.addUser(user.User, user.Group);
   }
   newUserLeaveGroup(user: JoinGroupNotifyModel) {
+    this.alertsService.add({type: AlertType.info, message: user.User.Username + ' leave from ' + user.Group});
     this.groupDataStore.removeUser(user.User, user.Group);
   }
   newGroup(group: GroupModel) {
@@ -119,12 +119,15 @@ export class ChatHubService {
       this.onlineDataStore.groups++;
       this.onlineDataStore.groupsList.push(group.Group);
     }
+    this.alertsService.add({type: AlertType.info, message: ' new group added: ' + group.Group});
   }
   updateGroup(group: GroupModel) {
     let groupExist = this.onlineDataStore.groupsList.find(x => x === group.Group);
     if (groupExist) {
+      this.alertsService.add({type: AlertType.info, message: 'group change from ' + groupExist + ' to ' + group.Group});
       groupExist = group.Group;
     }
+    this.alertsService.add({type: AlertType.info, message: 'group change name: ' + group.Group});
   }
   deleteGroup(group: GroupModel) {
     const groupExist = this.onlineDataStore.groupsList.find(x => x === group.Group);
@@ -132,6 +135,7 @@ export class ChatHubService {
       const index = this.onlineDataStore.groupsList.indexOf(groupExist);
       this.onlineDataStore.groupsList.splice(index, 1);
     }
+    this.alertsService.add({type: AlertType.info, message: 'group deleted: ' + group.Group});
   }
   //#endregion
 }
