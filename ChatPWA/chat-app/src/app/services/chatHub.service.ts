@@ -41,6 +41,7 @@ export class ChatHubService {
                         this.connection.invoke('GetUserContext').then(this.getUserContext.bind(this));
                       });
       // Register Callback
+      this.connection.onclose(this.closeConnection.bind(this));
       this.connection.on('ReceivePrivateMessage', this.receivePrivateMessage.bind(this));
       this.connection.on('ReceiveGroupMessage', this.receiveGroupMessage.bind(this));
       this.connection.on('NewConnectedUser', this.newConnectedUser.bind(this));
@@ -50,8 +51,10 @@ export class ChatHubService {
       this.connection.on('NewGroup', this.newGroup.bind(this));
       this.connection.on('UpdateGroup', this.updateGroup.bind(this));
       this.connection.on('DeleteGroup', this.deleteGroup.bind(this));
-      this.connection.onclose(this.closeConnection.bind(this));
     }
+  }
+  stop() {
+    this.connection.stop();
   }
   //#region [Connection]
   closeConnection(error: Error) {
@@ -135,6 +138,7 @@ export class ChatHubService {
     if (groupExist) {
       const index = this.onlineDataStore.groupsList.indexOf(groupExist);
       this.onlineDataStore.groupsList.splice(index, 1);
+      this.onlineDataStore.groups--;
     }
     this.alertsService.add({type: AlertType.info, message: 'group deleted: ' + group.Group});
   }

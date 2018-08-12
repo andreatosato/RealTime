@@ -18,9 +18,9 @@ export class AlertsComponent implements OnInit {
       let alertsToDelete = this.alerts;
       alertsToDelete.forEach(function(a) {
         this.alertService.close(a);
-      });
+      }.bind(this));
       alertsToDelete = new Array<Alert>();
-    }, 5000);
+    }, 2000);
   }
 
   closeError(message: IAlert) {
