@@ -47,7 +47,8 @@ namespace ChatApp.Backend
             services.AddSignalR(config => config.EnableDetailedErrors = true)
                 //.AddJsonProtocol(config => config.PayloadSerializerSettings.ContractResolver = new Newtonsoft.Json.Serialization.DefaultContractResolver())
                 .AddMessagePackProtocol()
-                .AddAzureSignalR();
+                //.AddAzureSignalR()
+                ;
         }
         
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
@@ -70,11 +71,16 @@ namespace ChatApp.Backend
             app.UseAuthentication();
             app.UseHttpsRedirection();
             app.UseMvc();
-           
-            app.UseAzureSignalR(map =>
+
+            app.UseSignalR(map =>
             {
                 map.MapHub<ChatHub>("/chat");
             });
+
+            //app.UseAzureSignalR(map =>
+            //{
+            //    map.MapHub<ChatHub>("/chat");
+            //});
         }
     }
 }

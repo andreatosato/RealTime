@@ -34,8 +34,7 @@ import { PrivateDataStoreService } from './services/private-data-store.service';
     FormsModule,
     HttpClientModule,
     routing,
-    NgbModule.forRoot(),
-    ServiceWorkerModule.register('/ngsw-worker.js', { enabled: environment.production })
+    NgbModule.forRoot()
   ],
   providers: [{
       provide: HTTP_INTERCEPTORS,

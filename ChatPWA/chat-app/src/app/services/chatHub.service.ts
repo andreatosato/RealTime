@@ -50,13 +50,14 @@ export class ChatHubService {
       this.connection.on('NewGroup', this.newGroup.bind(this));
       this.connection.on('UpdateGroup', this.updateGroup.bind(this));
       this.connection.on('DeleteGroup', this.deleteGroup.bind(this));
-      this.connection.onclose(this.closeConnection);
+      this.connection.onclose(this.closeConnection.bind(this));
     }
   }
   //#region [Connection]
   closeConnection(error: Error) {
     this.isConnected = false;
-    console.error(error.toString());
+    this.alertsService.add({type: AlertType.warning, message: 'Close Connection'});
+    this.alertsService.add({type: AlertType.danger, message: JSON.stringify(error)});
   }
   errorConnection(error: Error) {
     this.isConnected = false;

@@ -31,7 +31,7 @@ namespace ChatApp.Backend.Controllers
                 var currentUser = ChatStore.UsersOnline.Find(x => x.Username == User.Identity.Name);
                 if (currentUser != null)
                 {
-                    _chatHubContext.Clients.AllExcept(currentUser.ConnectionId).SendAsync("NewGroup", newGroup);
+                    _chatHubContext.Clients.AllExcept(currentUser.ConnectionId).SendAsync("NewGroup", group);
                 }
                 
             }
@@ -53,7 +53,7 @@ namespace ChatApp.Backend.Controllers
                 var currentUser = ChatStore.UsersOnline.Find(x => x.Username == User.Identity.Name);
                 if (currentUser != null)
                 {
-                    _chatHubContext.Clients.AllExcept(currentUser.ConnectionId).SendAsync("UpdateGroup", oldGroup);
+                    _chatHubContext.Clients.AllExcept(currentUser.ConnectionId).SendAsync("UpdateGroup", group);
                 }
             }
             return Ok();
@@ -72,7 +72,7 @@ namespace ChatApp.Backend.Controllers
                 var currentUser = ChatStore.UsersOnline.Find(x => x.Username == User.Identity.Name);
                 if (currentUser != null)
                 {
-                    _chatHubContext.Clients.AllExcept(currentUser.ConnectionId).SendAsync("DeleteGroup", groupToDelete);
+                    _chatHubContext.Clients.AllExcept(currentUser.ConnectionId).SendAsync("DeleteGroup", new GroupModel() { Group = group });
                 }
                 return Ok();
             }

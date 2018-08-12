@@ -46,7 +46,13 @@ export class ChatService {
     .subscribe(x => {
       let currentGroup = this.groupDataStore.chatData.find(t => t.idChat === groupName);
       if (currentGroup !== undefined) {
-        currentGroup.users = currentGroup.users;
+        currentGroup.users.forEach(function(u) {
+          const userFound = x.Values.find(t => t.Username === u.Username);
+          if (userFound === undefined) {
+            x.Values.push(u);
+          }
+        });
+        currentGroup.users = x.Values;
       } else {
         currentGroup = new GroupChatData();
         currentGroup.idChat = groupName;
