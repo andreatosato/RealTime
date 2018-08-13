@@ -80,13 +80,7 @@ export class ChatService {
         this.onlineDataStore.groupsList.push(group.Group);
       }
     },
-    (err) => {
-      if (err.ErrorState === 409) {
-        this.alertService.add({message: 'Group contains other ursers', type: AlertType.danger});
-      } else {
-        this.alertService.add({message: JSON.stringify(err), type: AlertType.danger});
-      }
-    });
+    (err) => this.alertService.add({message: JSON.stringify(err), type: AlertType.danger}));
   }
   deleteGroup(group: string) {
     return this.http.delete(environment.baseUrl + environment.controllers.Groups + '/' + group)
@@ -98,7 +92,13 @@ export class ChatService {
         this.onlineDataStore.groups--;
       }
     },
-    (err) => this.alertService.add({message: JSON.stringify(err), type: AlertType.danger}));
+    (err) => {
+      if (err.ErrorState === 409) {
+        this.alertService.add({message: 'Group contains other ursers', type: AlertType.danger});
+      } else {
+        this.alertService.add({message: JSON.stringify(err), type: AlertType.danger});
+      }
+    });
   }
   addUserToGroup(group: JoinGroupNotifyModel) {
     const request = new JoinGroupModel();
