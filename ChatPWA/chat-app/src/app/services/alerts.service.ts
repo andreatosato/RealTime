@@ -17,10 +17,7 @@ export class AlertsService {
     return this.alertData;
   }
   close(message: IAlert) {
-    const alertMessage = new Alert();
-    alertMessage.message = message.message;
-    alertMessage.type = message.type;
-    const index: number = this.alertData.indexOf(alertMessage);
+    const index: number = this.alertData.findIndex(x => x.message === message.message);
     this.alertData.splice(index, 1);
   }
 }

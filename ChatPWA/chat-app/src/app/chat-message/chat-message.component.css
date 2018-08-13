@@ -1,33 +1,33 @@
-.std-message-back-secondary {
-  background-color: rgb(126, 126, 126);
-  color: white;
-  padding: 12px !important;
-  padding-left: 30px !important;
-  border-radius: 20px 20px 20px 3px !important;
+.message {
+  border-radius: 2em;
+  padding:1em;
+  background-color:gray;
+  width:auto;
+  display:inline-block;
+  clear:both;
+  color:white;
+  margin:0.3em 0 1.6em 0;
+  position:relative;
 }
-
-.std-message-back-primary {
-  background-color: #007BFF;
-  color: white;
-  padding: 12px !important;
-  padding-right: 30px !important;
-  border-radius: 20px 20px 3px 20px !important;
+.message::after {
+  content: attr(data-author);
+  display:block;
+  color:black;
+  position:absolute;
+  bottom:-1.2em;
 }
-
-.std-message {
-  margin: 15px !important;
-  box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.2), 0 2px 8px 0 rgba(0, 0, 0, 0.19);
+.message.mine {
+  float:right;
+  border-bottom-right-radius: 0;
+  background-color: blue;
 }
-
-.message-sender-right {
-  font-weight: 300;
-  font-size: .8em;
-  margin-top: -11px;
-  margin-right: 15px;
+.message.mine::after {
+  right:0;
 }
-.message-sender-left {
-  font-weight: 300;
-  font-size: .8em;
-  margin-top: -11px;
-  margin-left: 15px;
+.message.others {
+  float:left;
+  border-bottom-left-radius: 0;
+}
+.message.others::after {
+  left: 0;
 }

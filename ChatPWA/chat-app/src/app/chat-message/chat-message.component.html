@@ -1,24 +1,6 @@
-<div [ngClass]="{
-    'd-flex': true,
-    'flex-row-reverse': isMyMessage(),
-    'flex-row': !isMyMessage()
-  }">
-  <div [ngClass]="{
-    'd-inline p-2 text-white': true,
-    'std-message': true,
-    'std-message-back-secondary': !isMyMessage(),
-    'std-message-back-primary': isMyMessage()
-  }">
-    <div class="row">
-      <div class="col">
-        <span>{{this.message.TextMessage}}</span>
-      </div>
-    </div>
-  </div>
+<div class="message" [ngClass]="{
+  'others': !isMyMessage(),
+  'mine': isMyMessage()}"
+  [attr.data-author]="isMyMessage() ? 'You' : this.message.From.Username">
+  {{this.message.TextMessage}}
 </div>
-<div *ngIf="this.IsGroup" [ngClass]="{
-    'message-sender-left': !isMyMessage(),
-    'message-sender-right': isMyMessage(),
-    'text-left': !isMyMessage(),
-    'text-right': isMyMessage()
-  }">{{isMyMessage() ? "You" : this.message.From.Username}}</div>
