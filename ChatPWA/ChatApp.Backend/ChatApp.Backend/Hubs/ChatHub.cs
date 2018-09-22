@@ -43,6 +43,7 @@ namespace ChatApp.Backend.Hubs
             var groupExist = ChatStore.UsersByGroups.FirstOrDefault(x => x.GroupName == message.Group);
             if(groupExist != null)
             {
+                //Clients.Group(message.Group).SendAsync("ReceiveGroupMessage", message);
                 Clients.Clients(groupExist.Users
                                           .Where(x => x.ConnectionId != Context.ConnectionId)
                                           .Select(x => x.ConnectionId)

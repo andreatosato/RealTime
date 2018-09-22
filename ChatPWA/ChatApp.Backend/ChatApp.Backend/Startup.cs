@@ -70,7 +70,7 @@ namespace ChatApp.Backend
                 });
 
             services.AddSignalR(config => config.EnableDetailedErrors = true)
-                //.AddJsonProtocol(config => config.PayloadSerializerSettings.ContractResolver = new Newtonsoft.Json.Serialization.DefaultContractResolver())
+                .AddJsonProtocol(config => config.PayloadSerializerSettings.ContractResolver = new Newtonsoft.Json.Serialization.DefaultContractResolver())
                 .AddMessagePackProtocol()
                 .AddAzureSignalR()
                 ;

@@ -31,8 +31,8 @@ namespace ServerlessApp.WPF.ViewModel
             {
                 SignalRConnectionInfo connectionHub = await GetSignalrConnectionInfo();
                 connection = new HubConnectionBuilder()
-                 .WithUrl(connectionHub.Endpoint, 
-                    (x) =>  x.AccessTokenProvider = () => Task.FromResult(connectionHub.AccessKey))
+                 .WithUrl(connectionHub.url, 
+                    (x) =>  x.AccessTokenProvider = () => Task.FromResult(connectionHub.accesstoken))
                  .Build();
 
                 await connection.StartAsync();
@@ -63,7 +63,7 @@ namespace ServerlessApp.WPF.ViewModel
 
     public class SignalRConnectionInfo
     {
-        public string Endpoint { get; set; }
-        public string AccessKey { get; set; }
+        public string url { get; set; }
+        public string accesstoken { get; set; }
     }
 }
