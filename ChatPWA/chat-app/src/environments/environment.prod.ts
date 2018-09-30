@@ -1,3 +1,4 @@
+/*
 export const environment = {
   production: true,
   baseUrl: 'https://codegensignalr.azurewebsites.net/api/',
@@ -9,8 +10,8 @@ export const environment = {
     UserStats: 'UserStats'
   }
 };
+*/
 
-/*
 export const environment = {
   production: false,
   baseUrl: 'https://localhost:44341/api/',
@@ -22,4 +23,4 @@ export const environment = {
     UserStats: 'UserStats'
   }
 };
-*/
+

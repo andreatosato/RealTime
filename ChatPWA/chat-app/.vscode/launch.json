@@ -6,10 +6,10 @@
     "configurations": [
         {
             "type": "chrome",
-            "request": "launch",
-            "name": "Launch Chrome against localhost",
-            "url": "http://localhost:8080",
-            "webRoot": "${workspaceFolder}"
+           "request": "launch",
+           "name": "Angular",
+           "url": "http://localhost:4200",
+           "webRoot": "${workspaceFolder}/chat-app"
         }
     ]
 }
