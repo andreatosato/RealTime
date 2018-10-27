@@ -10,7 +10,7 @@ namespace HeartRate.Simulatore
     public class Program
     {
         private static EventHubClient eventHubClient;
-        private const string EventHubConnectionString = "Endpoint=sb://codegen.servicebus.windows.net/;SharedAccessKeyName=RootManageSharedAccessKey;SharedAccessKey=SWflHzFFDGtugOBjlu2jazqKuZDn78YsD76PEg4bSBg=";
+        private const string EventHubConnectionString = "Endpoint=sb://dnsignalr.servicebus.windows.net/;SharedAccessKeyName=RootManageSharedAccessKey;SharedAccessKey=vUdxq8I9GjdQhzcPpiDsOxM6qyQgr8dE7JBm8CJkjr0=";
         private const string EventHubName = "temperature";
 
         public static void Main(string[] args)

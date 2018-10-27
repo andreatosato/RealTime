@@ -37,7 +37,7 @@ namespace HeartRate.Web
                     .SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
             // Registro Hosted Service per scodare gli eventi
             services.AddSingleton<Microsoft.Extensions.Hosting.IHostedService, HeartRateHostedService>(x => 
-                new HeartRateHostedService(Configuration.GetValue<string>("IoTHub"),
+                new HeartRateHostedService(Configuration.GetValue<string>("EventHub"),
                                              Configuration.GetValue<string>("StorageConnectionString"),
                                              x.GetRequiredService<ILogger<HeartRateHostedService>>(),
                                              x.GetRequiredService<IHeartRateHubServices>()));
